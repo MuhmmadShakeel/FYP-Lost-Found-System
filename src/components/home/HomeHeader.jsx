@@ -1,4 +1,3 @@
-// Updated Home component for Lost & Found System
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -62,9 +61,11 @@ const HomeHeader = () => {
   useEffect(() => {
     AOS.init({ duration: 800, once: false, offset: 100 });
 
+    
+   //keep index inside array length
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    },5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -92,8 +93,7 @@ const HomeHeader = () => {
           <h1
             className="text-3xl md:text-5xl font-extrabold mb-6 transition-all duration-1000"
             data-aos="zoom-in"
-            key={currentSlide.id}
-          >
+            key={currentSlide.id}>
             {currentSlide.title.split(" ").map((word, i) => {
               const isWhite = currentSlide.whiteWords.includes(word);
               return (
@@ -157,3 +157,9 @@ const HomeHeader = () => {
 };
 
 export default HomeHeader;
+
+
+
+
+
+
