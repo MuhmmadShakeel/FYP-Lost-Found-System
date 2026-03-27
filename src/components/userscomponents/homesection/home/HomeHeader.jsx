@@ -12,7 +12,7 @@ const HomeHeader = () => {
       description:
         "Report lost belongings instantly and connect with verified finders through a secure digital platform designed for speed, trust, and reliability.",
       image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+        "https://images.pexels.com/photos/9244751/pexels-photo-9244751.jpeg",
     },
     {
       id: 2,
@@ -73,7 +73,7 @@ const HomeHeader = () => {
   const currentSlide = slides[currentIndex];
 
   return (
-    <section className="relative h-[90vh] overflow-hidden bg-[#F8FAFC]">
+    <section className="relative h-[100vh] overflow-hidden bg-[#F8FAFC]">
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -85,7 +85,7 @@ const HomeHeader = () => {
       ))}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#1E3A8A]/90 to-[#1E3A8A]/50 mix-blend-multiply" />
+      <div className="absolute inset-0   bg-gradient-to-r from-[#1E3A8A]/90 to-[#1E3A8A]/50 mix-blend-multiply" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center h-full px-5 md:px-6 lg:px-8">
