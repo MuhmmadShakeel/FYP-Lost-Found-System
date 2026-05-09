@@ -22,6 +22,7 @@ import AdminLostReportPage from "./pages/adminpages/AdminLostReportPage.jsx";
 import AdminFoundReportPage from "./pages/adminpages/AdminFoundReportPage.jsx";
 import DashboardUserPage from "./pages/adminpages/DashboardUserPage.jsx";
 import UserReviwsPage from "./pages/adminpages/UserReviwsPage.jsx";
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -37,7 +38,9 @@ function App() {
           element={
             <>
               <Navbar />
-
+                 <div>
+                  <ToastContainer />
+                 </div>
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about" element={<AboutPage />} />
@@ -47,6 +50,7 @@ function App() {
                 <Route path="/report-found" element={<ReportFoundPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<SignUp />} />
+
               </Routes>
 
               <Footer />

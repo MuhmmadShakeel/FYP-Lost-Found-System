@@ -41,5 +41,4 @@ function AdminNav({ setOpen }) {
     </header>
   );
 }
-
 export default AdminNav;

@@ -1,220 +1,306 @@
 import React, { useState } from "react";
+import {
+  useCreateLostPostMutation,
+  useGetAllLostPostsQuery,
+} from "../../../../redux/LostPost";
 
-function AllLostReport() {
+function LostPost() {
   const [isOpen, setIsOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
 
-  const reports = [
-    {
-      id: 1,
-      name: "Black Leather Wallet",
-      description:
-        "Lost near City Mall parking area. Contains important ID cards and bank cards. Please contact if found.",
-      image:
-        "https://images.pexels.com/photos/2079249/pexels-photo-2079249.jpeg",
-    },
-    {
-      id: 2,
-      name: "iPhone 13 Pro",
-      description:
-        "Lost at Central Park jogging track. Blue color with transparent case. Reward will be offered.",
-      image:
-        "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg",
-    },
-    {
-      id: 3,
-      name: "Car Keys",
-      description:
-        "Toyota car keys lost near university campus main gate. Attached with small red keychain.",
-      image:
-        "https://images.pexels.com/photos/3651812/pexels-photo-3651812.jpeg",
-    },
-  ];
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    location: "",
+    image: null,
+  });
 
+  const { data, isLoading, isError } = useGetAllLostPostsQuery();
+
+  const [createLostPost, { isLoading: isCreating }] =
+    useCreateLostPostMutation();
+
+  const reports = data?.data || [];
+
+  // Input Change
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Image Change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
       setPreviewImage(URL.createObjectURL(file));
+
+      setFormData({
+        ...formData,
+        image: file,
+      });
+    }
+  };
+
+  // Submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const sendData = new FormData();
+
+    sendData.append("name", formData.name);
+    sendData.append("description", formData.description);
+    sendData.append("location", formData.location);
+    sendData.append("lostimage", formData.image);
+
+    try {
+      await createLostPost(sendData).unwrap();
+
+      setFormData({
+        name: "",
+        description: "",
+        location: "",
+        image: null,
+      });
+
+      setPreviewImage(null);
+      setIsOpen(false);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
-    <section className="py-16 px-6 bg-gray-50 relative">
+    <section className="min-h-screen bg-[#f4f7ff] py-16 px-5">
 
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 max-w-6xl mx-auto mb-12">
+      {/* HEADER */}
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5 mb-12">
 
         <div>
-          <h2 className="text-4xl font-bold text-[#0B1C3D] mb-3">
-            All Lost Reports
-          </h2>
-          <p className="text-gray-600 max-w-md mb-6">
-            Browse all recently reported lost items. You can update, delete,
-            or add additional details anytime to improve recovery visibility.
+          <h1 className="text-4xl font-bold text-[#0B1C3D]">
+            Lost Items
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Report and manage lost belongings professionally.
           </p>
-
-          <button
-            onClick={() => setIsOpen(true)}
-            className="bg-[#0B1C3D] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:bg-[#132a5c] transition-all duration-300"
-          >
-            + Report Lost Item
-          </button>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-          <input
-            type="text"
-            placeholder="Search lost items..."
-            className="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0B1C3D] w-full sm:w-[250px]"
-          />
+        <button
+          onClick={() => setIsOpen(true)}
+          className="bg-[#0B1C3D] hover:bg-[#132a5c] text-white px-6 py-3 rounded-2xl font-semibold shadow-lg transition-all duration-300"
+        >
+          + Report Lost Item
+        </button>
 
-          <select className="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]">
-            <option>All Categories</option>
-            <option>Electronics</option>
-            <option>Documents</option>
-            <option>Accessories</option>
-            <option>Vehicles</option>
-          </select>
-        </div>
       </div>
 
-      {/* Cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {reports.map((report) => (
+      {/* STATES */}
+      {isLoading && (
+        <p className="text-center text-lg font-medium text-gray-600">
+          Loading...
+        </p>
+      )}
+
+      {isError && (
+        <p className="text-center text-red-500 font-medium">
+          Failed to load data
+        </p>
+      )}
+
+      {/* CARDS */}
+      <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        {reports.map((item) => (
           <div
-            key={report.id}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group"
+            key={item._id}
+            className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300"
           >
+
+            {/* IMAGE */}
             <div className="overflow-hidden">
               <img
-                src={report.image}
-                alt={report.name}
-                className="w-full h-[220px] object-cover group-hover:scale-105 transition duration-500"
+                src={
+                  item?.lostimage?.url ||
+                  "https://via.placeholder.com/400x300"
+                }
+                alt={item.name}
+                className="h-60 w-full object-cover hover:scale-105 transition-all duration-500"
               />
             </div>
 
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-[#0B1C3D] mb-3">
-                {report.name}
-              </h3>
+            {/* CONTENT */}
+            <div className="p-5">
 
-              <p className="text-gray-600 text-sm leading-relaxed mb-5">
-                {report.description}
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-xl font-bold text-[#0B1C3D]">
+                  {item.name}
+                </h2>
+
+                <span className="bg-red-100 text-red-600 text-xs px-3 py-1 rounded-full font-semibold">
+                  Lost
+                </span>
+              </div>
+
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {item.description}
               </p>
 
-              <div className="flex justify-between items-center">
-                <button className="bg-[#0B1C3D] text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-[#132a5c] transition duration-300">
-                  View Location
+              <div className="mt-5 flex items-center justify-between">
+
+                <p className="text-sm text-gray-500">
+                  📍 {item.location}
+                </p>
+
+                <button className="px-4 py-2 rounded-xl bg-[#0B1C3D]/10 text-[#0B1C3D] text-sm font-medium hover:bg-[#0B1C3D] hover:text-white transition-all duration-300">
+                  Details
                 </button>
 
-                <div className="flex gap-3 text-sm">
-                  <button className="text-green-600 hover:underline">
-                    Update
-                  </button>
-                  <button className="text-red-600 hover:underline">
-                    Delete
-                  </button>
-                </div>
               </div>
+
             </div>
           </div>
         ))}
+
       </div>
 
-      {/* Modal */}
+      {/* MODAL */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4 py-6">
 
-          <div className="bg-white w-[95%] max-w-xl rounded-2xl shadow-2xl p-8 relative animate-fadeIn">
+          {/* MODAL BOX */}
+          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden">
 
-            {/* Close */}
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                setPreviewImage(null);
-              }}
-              className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl"
-            >
-              ✕
-            </button>
+            {/* HEADER */}
+            <div className="sticky top-0 bg-white z-10 border-b border-gray-100 px-6 py-5 flex items-center justify-between">
 
-            <h3 className="text-2xl font-bold text-[#0B1C3D] mb-6 text-center">
-              Report Lost Item
-            </h3>
+              <div>
+                <h2 className="text-2xl font-bold text-[#0B1C3D]">
+                  Report Lost Item
+                </h2>
 
-            <form className="space-y-5">
+                <p className="text-sm text-gray-500 mt-1">
+                  Fill the details carefully
+                </p>
+              </div>
 
-              {/* Item Name */}
-              <input
-                type="text"
-                placeholder="Item Name"
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#0B1C3D] outline-none"
-              />
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-500 flex items-center justify-center transition-all duration-300"
+              >
+                ✕
+              </button>
 
-              {/* Description */}
-              <textarea
-                placeholder="Item Description"
-                rows="4"
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#0B1C3D] outline-none"
-              ></textarea>
+            </div>
 
-              {/* Location */}
-              <input
-                type="text"
-                placeholder="Last Known Location"
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#0B1C3D] outline-none"
-              />
+            {/* FORM AREA */}
+            <div className="max-h-[75vh] overflow-y-auto px-6 py-5">
 
-              {/* Image Upload */}
-              <div className="space-y-3">
-                <label className="block text-sm font-semibold text-[#0B1C3D]">
-                  Upload Item Image
-                </label>
+              <form onSubmit={handleSubmit} className="space-y-5">
 
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl cursor-pointer focus:ring-2 focus:ring-[#0B1C3D]"
-                />
+                {/* NAME */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Item Name
+                  </label>
 
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter item name"
+                    className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+                    required
+                  />
+                </div>
+
+                {/* DESCRIPTION */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Description
+                  </label>
+
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    rows="4"
+                    placeholder="Describe the lost item"
+                    className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+                    required
+                  />
+                </div>
+
+                {/* LOCATION */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Location
+                  </label>
+
+                  <input
+                    type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    placeholder="Where did you lose it?"
+                    className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+                    required
+                  />
+                </div>
+
+                {/* FILE */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    Upload Item Image
+                  </label>
+
+                  <div className="border-2 border-dashed border-gray-300 rounded-3xl p-5 bg-gray-50">
+
+                    <input
+                      type="file"
+                      onChange={handleImageChange}
+                      className="w-full"
+                      required
+                    />
+
+                    <p className="text-xs text-gray-400 mt-3 text-center">
+                      JPG, PNG or JPEG supported
+                    </p>
+
+                  </div>
+                </div>
+
+                {/* IMAGE PREVIEW */}
                 {previewImage && (
-                  <div className="mt-3">
+                  <div className="overflow-hidden rounded-3xl border border-gray-200">
                     <img
                       src={previewImage}
                       alt="Preview"
-                      className="w-full h-[180px] object-cover rounded-xl shadow-md"
+                      className="w-full h-52 object-cover"
                     />
                   </div>
                 )}
-              </div>
 
-              {/* Submit */}
-              <button
-                type="submit"
-                className="w-full bg-[#0B1C3D] text-white py-3 rounded-xl font-semibold hover:bg-[#132a5c] transition duration-300 shadow-lg"
-              >
-                Submit Report
-              </button>
+                {/* BUTTON */}
+                <button
+                  type="submit"
+                  disabled={isCreating}
+                  className="w-full bg-[#0B1C3D] hover:bg-[#132a5c] text-white py-3 rounded-2xl font-semibold shadow-lg transition-all duration-300"
+                >
+                  {isCreating ? "Submitting..." : "Submit Report"}
+                </button>
 
-            </form>
+              </form>
+
+            </div>
           </div>
         </div>
       )}
-
-      {/* Animation */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-15px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-      `}</style>
-
     </section>
   );
 }
 
-export default AllLostReport;
+export default LostPost;

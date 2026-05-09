@@ -2,36 +2,21 @@ import React, { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-function Reviews() {
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      name: "Ali Khan",
-      comment: "Great platform! I found my lost wallet within 2 days.",
-      time: "2 hours ago",
-    },
-    {
-      id: 2,
-      name: "Sara Ahmed",
-      comment: "Very helpful system. Clean and easy to use.",
-      time: "1 day ago",
-    },
-    {
-      id: 3,
-      name: "Ahmed Ali",
-      comment: "Fast response! Loved the system.",
-      time: "3 days ago",
-    },
-    {
-      id: 4,
-      name: "Fatima Noor",
-      comment: "User-friendly and efficient platform.",
-      time: "4 days ago",
-    },
-  ]);
+// RTK Query Hooks
+import {
+  useCreateReviewsMutation,
+  useGetAllReviewsQuery,
+} from "../../../../redux/Reviews";
 
+function Reviews() {
   const [newComment, setNewComment] = useState("");
 
+  // 🔥 API Hooks
+  const { data, isLoading, refetch } = useGetAllReviewsQuery();
+  const [createReview, { isLoading: isPosting }] =
+    useCreateReviewsMutation();
+
+  // 🔥 AOS Init
   useEffect(() => {
     AOS.init({
       duration: 900,
@@ -39,22 +24,30 @@ function Reviews() {
     });
   }, []);
 
-  const handleAddReview = () => {
+  // 🔥 Normalize data (VERY IMPORTANT)
+  const reviewsList = Array.isArray(data)
+    ? data
+    : data?.reviews || [];
+
+  // 🔥 Handle Add Review
+  const handleAddReview = async () => {
     if (!newComment.trim()) return;
 
-    const newReview = {
-      id: Date.now(),
-      name: "You",
-      comment: newComment,
-      time: "Just now",
-    };
+    try {
+      await createReview({
+        reviews: newComment,   // ✅ matches backend
+        rating: 5,             // ✅ required field
+      }).unwrap();
 
-    setReviews([newReview, ...reviews]);
-    setNewComment("");
+      setNewComment("");
+      refetch();
+    } catch (error) {
+      console.error("Error posting review:", error);
+    }
   };
 
   return (
-    <section className="py-4">
+    <section className="py-4 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
         {/* Heading */}
@@ -71,10 +64,10 @@ function Reviews() {
         {/* Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
 
-          {/* LEFT - IMAGE */}
+          {/* LEFT IMAGE */}
           <div
             data-aos="fade-right"
-            className="rounded-3xl overflow-hidden border border-gray-200"
+            className="rounded-3xl overflow-hidden border border-gray-200 shadow-md"
           >
             <img
               src="https://i.pinimg.com/1200x/e1/c5/15/e1c5157514f9a5819b4e9ec0ce25c5cd.jpg"
@@ -83,13 +76,13 @@ function Reviews() {
             />
           </div>
 
-          {/* RIGHT - REVIEW CARD */}
+          {/* RIGHT PANEL */}
           <div
             data-aos="fade-left"
-            className="bg-white rounded-3xl border border-gray-200 p-10 flex flex-col h-[500px]"
+            className="bg-white rounded-3xl border border-gray-200 p-10 flex flex-col h-[500px] shadow-md"
           >
 
-            {/* Add Review */}
+            {/* ADD REVIEW */}
             <div className="flex gap-4 mb-8">
               <input
                 type="text"
@@ -101,39 +94,56 @@ function Reviews() {
 
               <button
                 onClick={handleAddReview}
-                className="bg-[#1e3a8a] hover:bg-[#162a70] text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-lg"
+                disabled={isPosting}
+                className="bg-[#1e3a8a] hover:bg-[#162a70] text-white px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 hover:shadow-lg disabled:opacity-50"
               >
-                Post
+                {isPosting ? "Posting..." : "Post"}
               </button>
             </div>
 
-            {/* Reviews List */}
+            {/* REVIEWS LIST */}
             <div className="flex-1 overflow-y-auto space-y-6 pr-3">
-              {reviews.map((review, index) => (
+
+              {/* LOADING */}
+              {isLoading && (
+                <p className="text-center text-gray-500">Loading reviews...</p>
+              )}
+
+              {/* EMPTY */}
+              {!isLoading && reviewsList.length === 0 && (
+                <p className="text-center text-gray-400">
+                  No reviews yet. Be the first!
+                </p>
+              )}
+
+              {/* DATA */}
+              {reviewsList.map((review, index) => (
                 <div
-                  key={review.id}
+                  key={review._id}
                   data-aos="fade-up"
                   data-aos-delay={index * 100}
                   className="flex gap-4 bg-gray-50 p-5 rounded-2xl border border-gray-100 hover:shadow-md transition"
                 >
                   {/* Avatar */}
                   <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#1e3a8a] text-white font-semibold text-lg shadow-md">
-                    {review.name.charAt(0)}
+                    {review.user?.name?.charAt(0) || "U"}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-gray-800 text-base">
-                        {review.name}
+                        {review.user?.name || "Anonymous"}
                       </span>
                       <span className="text-xs text-gray-400">
-                        {review.time}
+                        {review.createdAt
+                          ? new Date(review.createdAt).toLocaleString()
+                          : "Just now"}
                       </span>
                     </div>
 
                     <p className="text-sm text-gray-600 mt-3 leading-relaxed">
-                      {review.comment}
+                      {review.reviews}
                     </p>
                   </div>
                 </div>
@@ -141,11 +151,9 @@ function Reviews() {
             </div>
 
           </div>
-
         </div>
       </div>
     </section>
   );
 }
-
 export default Reviews;

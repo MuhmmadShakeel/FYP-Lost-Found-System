@@ -8,17 +8,19 @@ import {
   FaBars,
   FaTimes
 } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
 
 function Sidebar() {
 
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
   const menuItems = [
-    { name: "Overview", icon: <FaTachometerAlt /> },
-    { name: "Lost Reports", icon: <FaSearch /> },
-    { name: "Found Reports", icon: <FaBoxOpen /> },
-    { name: "Users", icon: <FaUsers /> },
-    { name: "Reviews", icon: <FaStar /> },
+    { name: "Overview", icon: <FaTachometerAlt />, path: "/admin/overview" },
+    { name: "Lost Reports", icon: <FaSearch />, path: "/admin/lostreport" },
+    { name: "Found Reports", icon: <FaBoxOpen />, path: "/admin/foundreport" },
+    { name: "Users", icon: <FaUsers />, path: "/admin/dashboarduser" },
+    { name: "Reviews", icon: <FaStar />, path: "/admin/userreviews" },
   ];
 
   return (
@@ -60,13 +62,19 @@ function Sidebar() {
         <ul className="mt-6 flex flex-col gap-2 px-4">
 
           {menuItems.map((item, index) => (
-            <li
+            <Link
               key={index}
-              className="flex items-center gap-4 p-3 rounded-lg cursor-pointer transition duration-300 hover:bg-white hover:text-[#203C8B]"
+              to={item.path}
+              onClick={() => setOpen(false)}
+              className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition duration-300 ${
+                location.pathname === item.path
+                  ? "bg-white text-[#203C8B]"
+                  : "hover:bg-white hover:text-[#203C8B]"
+              }`}
             >
               <span className="text-lg">{item.icon}</span>
               <span className="text-sm font-medium">{item.name}</span>
-            </li>
+            </Link>
           ))}
 
         </ul>
