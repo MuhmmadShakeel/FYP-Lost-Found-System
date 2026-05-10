@@ -27,7 +27,7 @@ export const foundPostApi = createApi({
         }),
 
         getFoundpoatsbyid: builder.query({
-            query: (id) => `/getfoundbyid/${id}`,
+            query: () => `/getfoundbyid`,
             method: "GET",
             providesTags: ["FoundPosts"],
         }),

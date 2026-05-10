@@ -30,6 +30,8 @@ function AllReportsFound() {
     image: null,
   });
 
+  const [imagePreview, setImagePreview] = useState(null);
+
   const { data: allFoundPosts, isLoading, refetch } = useGetAllFoundPostsQuery();
 
   const [createFoundPost, { isLoading: createLoading, isSuccess, isError: createError, error: createApiError }] = useCreateFoundPostMutation();
@@ -65,29 +67,62 @@ function AllReportsFound() {
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
       setFormData({
         ...formData,
-        image: e.target.files[0],
+        image: file,
       });
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData({
+      ...formData,
+      image: null,
+    });
+    setImagePreview(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      console.log("🚀 Starting found item creation...");
+      console.log("Form data:", formData);
+
       const submitData = new FormData();
 
-      submitData.append("name", formData.name);
-      submitData.append("description", formData.description);
-      submitData.append("location", formData.location);
-      submitData.append("contactInfo", formData.contactInfo);
+      submitData.append("name", formData.name.trim());
+      submitData.append("description", formData.description.trim());
+      submitData.append("location", formData.location.trim());
+      submitData.append("contactInfo", formData.contactInfo.trim());
 
       if (formData.image) {
+        console.log("📎 Adding image to form data:", formData.image.name);
         submitData.append("foundimage", formData.image);
+      } else {
+        console.log("⚠️ No image selected");
+      }
+
+      // Log FormData contents for debugging
+      console.log("📋 FormData contents:");
+      for (let [key, value] of submitData.entries()) {
+        if (value instanceof File) {
+          console.log(`${key}: File(${value.name}, ${value.size} bytes, ${value.type})`);
+        } else {
+          console.log(`${key}: ${value}`);
+        }
       }
 
       const response = await createFoundPost(submitData).unwrap();
+
+      console.log("✅ Success response:", response);
 
       alert(response?.message || "Found item created successfully");
 
@@ -99,9 +134,11 @@ function AllReportsFound() {
         image: null,
       });
 
+      setImagePreview(null);
       setOpenModal(false);
       refetch(); // Refetch the list after creation
     } catch (error) {
+      console.error("❌ Error creating found item:", error);
       alert(error?.data?.message || "Something went wrong while creating item");
     }
   };
@@ -447,20 +484,55 @@ function AllReportsFound() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Upload Image
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Upload Image <span className="text-red-500">*</span>
                   </label>
-                  <label className="w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-[#0B1C3D] transition-colors">
-                    <Upload className="text-gray-400 mb-2" size={24} />
-                    <p className="text-gray-500 text-sm">
-                      Click to upload image
-                    </p>
-                    <input
-                      type="file"
-                      hidden
-                      onChange={handleImageChange}
-                    />
-                  </label>
+                  {imagePreview ? (
+                    <div className="relative w-full rounded-2xl overflow-hidden bg-gray-100">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-40 object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-colors shadow-lg"
+                      >
+                        <X size={16} />
+                      </button>
+                      <label className="absolute inset-0 bg-black/0 hover:bg-black/10 flex items-center justify-center cursor-pointer transition-colors">
+                        <div className="bg-white/90 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-white transition-colors">
+                          Change Image
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          hidden
+                          onChange={handleImageChange}
+                        />
+                      </label>
+                    </div>
+                  ) : (
+                    <label className="w-full h-40 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-[#0B1C3D] hover:bg-blue-50 transition-all duration-300 group">
+                      <div className="flex flex-col items-center gap-2">
+                        <Upload className="text-gray-400 group-hover:text-[#0B1C3D] transition-colors" size={28} />
+                        <p className="text-gray-600 text-sm font-medium group-hover:text-[#0B1C3D] transition-colors">
+                          Click to upload image
+                        </p>
+                        <p className="text-gray-500 text-xs">
+                          PNG, JPG, GIF up to 5MB
+                        </p>
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={handleImageChange}
+                        required
+                      />
+                    </label>
+                  )}
                 </div>
 
                 {isSuccess && (
