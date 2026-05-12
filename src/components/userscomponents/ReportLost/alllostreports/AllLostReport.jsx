@@ -124,10 +124,13 @@ function LostPost() {
               <img
                 src={
                   item?.lostimage?.url ||
-                  "https://via.placeholder.com/400x300"
+                  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop"
                 }
                 alt={item.name}
                 className="h-60 w-full object-cover hover:scale-105 transition-all duration-500"
+                onError={(e) => {
+                  e.target.src = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop";
+                }}
               />
             </div>
 

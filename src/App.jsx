@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route } from "react-router-dom";
 
 /* User Components */

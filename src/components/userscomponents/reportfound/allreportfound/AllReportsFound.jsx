@@ -319,12 +319,14 @@ function AllReportsFound() {
 
                       <img
                         src={
-                          report?.image?.url ||
-                          report?.image ||
+                          report?.foundimage?.url ||
                           "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop"
                         }
                         alt={report?.name || report?.title}
                         className="w-full h-60 object-cover group-hover:scale-105 transition duration-700"
+                        onError={(e) => {
+                          e.target.src = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop";
+                        }}
                       />
 
                       <div className="absolute top-4 right-4">

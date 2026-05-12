@@ -183,15 +183,11 @@ function FoundPostsPanel() {
         res?.message || "Found item updated successfully"
       );
 
+      // Update the local state with the updated item data
       setFoundPosts((prev) =>
         prev.map((item) =>
           item._id === editingItem
-            ? {
-                ...item,
-                name: draftTitle,
-                description: draftDetails,
-                location: draftLocation,
-              }
+            ? res.data // Use the full updated item from response
             : item
         )
       );
@@ -483,6 +479,9 @@ function FoundPostsPanel() {
                         src={item.foundimage.url}
                         alt={item.name}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.src = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop";
+                        }}
                       />
                     </div>
                   )}

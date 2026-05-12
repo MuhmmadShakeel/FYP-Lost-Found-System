@@ -21,6 +21,7 @@ export const lostPostApi = createApi({
         url: "/createlost",
         method: "POST",
         body: data,
+        // Do not set Content-Type for FormData, let browser set it
       }),
       invalidatesTags: ["LostPosts"],
     }),
@@ -28,6 +29,28 @@ export const lostPostApi = createApi({
     getAllLostPosts: builder.query({
       query: () => "/getlost",
       providesTags: ["LostPosts"],
+    }),
+
+    getLostPostById: builder.query({
+      query: (id) => `/getlost/${id}`,
+      providesTags: (result, error, id) => [{ type: "LostPosts", id }],
+    }),
+
+    getLostPostsByUserId: builder.query({
+      query: () => "/getlostbyuserid",
+      providesTags: ["LostPosts"],
+    }),
+
+    updateLostPost: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/updatelost/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "LostPosts", id },
+        "LostPosts"
+      ],
     }),
 
     deleteLostPost: builder.mutation({
@@ -43,5 +66,8 @@ export const lostPostApi = createApi({
 export const {
   useCreateLostPostMutation,
   useGetAllLostPostsQuery,
+  useGetLostPostByIdQuery,
+  useGetLostPostsByUserIdQuery,
+  useUpdateLostPostMutation,
   useDeleteLostPostMutation,
 } = lostPostApi;
