@@ -71,7 +71,7 @@ function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/20 mt-12 pt-6 text-center text-gray-300 text-sm">
+        <div className="border-t border-white/20 mt-12 pt-6 text-center text-gray-300 text-sm leading-relaxed">
           © {new Date().getFullYear()} CityWide Lost & Found. All Rights Reserved.
         </div>
 

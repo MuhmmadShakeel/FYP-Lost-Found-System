@@ -9,7 +9,7 @@ function AdminNav({ setOpen }) {
       <div className="flex items-center gap-4">
 
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen?.(true)}
           className="md:hidden text-xl text-[#203C8B]"
         >
           <FaBars />

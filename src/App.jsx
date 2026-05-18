@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Routes, Route } from "react-router-dom";
-
+import { useState } from "react";
 /* User Components */
 import Navbar from "./components/userscomponents/common/Navbar.jsx";
 import Footer from "./components/userscomponents/common/Footer.jsx";
@@ -29,6 +29,8 @@ import { ToastContainer } from 'react-toastify';
 
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <>
       <Routes>
@@ -64,18 +66,18 @@ function App() {
         <Route
           path="/admin/*"
           element={
-            <div className="flex">
-
-              <Sidebar/>
-              <AdminNav/> 
-
-              <Routes>
-            <Route path="overview" element={<Overviewpage />} />
-            <Route path="lostreport" element={<AdminLostReportPage />} />
-            <Route path="foundreport" element={<AdminFoundReportPage />} />
-            <Route path="dashboarduser" element={<DashboardUserPage />} />
-            <Route path="userreviews" element={<UserReviwsPage />} />
-         </Routes>
+            <div className="min-h-screen bg-slate-50">
+              <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+              <AdminNav setOpen={setSidebarOpen} />
+              <main className="min-h-screen w-full pt-16 md:pl-64">
+                <Routes>
+                  <Route path="overview" element={<Overviewpage />} />
+                  <Route path="lostreport" element={<AdminLostReportPage />} />
+                  <Route path="foundreport" element={<AdminFoundReportPage />} />
+                  <Route path="dashboarduser" element={<DashboardUserPage />} />
+                  <Route path="userreviews" element={<UserReviwsPage />} />
+                </Routes>
+              </main>
             </div>
           }
         />

@@ -10,9 +10,11 @@ import {
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
-function Sidebar() {
+function Sidebar({ open: controlledOpen, setOpen: setControlledOpen }) {
 
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = setControlledOpen ?? setInternalOpen;
   const location = useLocation();
 
   const menuItems = [

@@ -31,11 +31,26 @@ export const userApi = createApi({
       invalidatesTags: ['User'],
     }),
 
+  getAllUsers: builder.query({
+  query: () => ({
+    url: '/getalluser',
+  }),
+}),
+
+    deleteuser:builder.mutation({
+      query: (id) => ({
+        url: `/deleteuser/${id}`,
+        method: 'DELETE',
+      }),
+    }),
+
   }),
 });
 
 // ✅ EXPORT HOOKS
 export const {
   useRegisterUserMutation,
-  useLoginUserMutation
+  useLoginUserMutation,
+  useGetAllUsersQuery,
+  useDeleteuserMutation,
 } = userApi;

@@ -63,11 +63,11 @@ function Login() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 bg-[#f4f7ff] py-24">
-      <div className="w-full max-w-4xl bg-white rounded-2xl overflow-hidden grid md:grid-cols-2 shadow-xl">
+    <section className="min-h-screen flex items-center justify-center px-4 bg-[#f4f7ff] py-20">
+      <div className="w-full max-w-4xl bg-white rounded-3xl overflow-hidden grid grid-cols-1 md:grid-cols-2 shadow-2xl border border-slate-200">
 
         {/* IMAGE */}
-        <div className="hidden md:block h-112.5" data-aos="fade-right">
+        <div className="hidden md:block min-h-[520px]" data-aos="fade-right">
           <img
             src="https://i.pinimg.com/736x/e8/af/af/e8afaff86ef1d8cc4ca9838e8eceaee4.jpg"
             alt="Login"
@@ -76,9 +76,9 @@ function Login() {
         </div>
 
         {/* FORM */}
-        <div className="p-8 flex flex-col justify-center h-112.5" data-aos="fade-left">
+        <div className="p-8 flex flex-col justify-center min-h-[520px]" data-aos="fade-left">
 
-          <h2 className="text-3xl font-bold text-[#0B1C3D] mb-2">
+          <h2 className="text-3xl font-semibold text-[#0B1C3D] mb-2 whitespace-nowrap">
             Welcome Back 👋
           </h2>
 

@@ -1,124 +1,91 @@
 import React, { useState, useMemo } from "react";
-import { 
-  FaSearch, FaStar, FaUser, FaCalendarAlt, FaChevronLeft, FaChevronRight, 
-  FaThumbsUp, FaComment, FaFilter, FaTimes, FaStarHalfAlt, FaRegStar
+import {
+  FaSearch,
+  FaStar,
+  FaCalendarAlt,
+  FaChevronLeft,
+  FaChevronRight,
+  FaThumbsUp,
+  FaComment,
+  FaFilter,
+  FaTimes,
+  FaStarHalfAlt,
+  FaRegStar,
+  FaTrash,
 } from "react-icons/fa";
+
+import {
+  useGetAllReviewsQuery,
+  useDeleteReviewMutation,
+} from "../../../redux/Reviews";
 
 function UserReviews() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRating, setSelectedRating] = useState("All Ratings");
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 4;
 
-  const reviews = [
-    { 
-      id: 1, 
-      name: "Ali Khan", 
-      email: "ali@example.com",
-      rating: 5, 
-      comment: "Amazing platform! Found my lost wallet within hours. The team is very responsive and helpful. Highly recommend this service to everyone.",
-      date: "2024-03-15",
-      helpful: 24,
-      avatar: "AK"
-    },
-    { 
-      id: 2, 
-      name: "Sara Ahmed", 
-      email: "sara@example.com",
-      rating: 5, 
-      comment: "Excellent service! I lost my phone and someone found it through this platform. The process was smooth and efficient. Thank you!",
-      date: "2024-03-14",
-      helpful: 18,
-      avatar: "SA"
-    },
-    { 
-      id: 3, 
-      name: "Usman Tariq", 
-      email: "usman@example.com",
-      rating: 4, 
-      comment: "Good platform but could use some improvements in the search functionality. Overall satisfied with the service.",
-      date: "2024-03-13",
-      helpful: 12,
-      avatar: "UT"
-    },
-    { 
-      id: 4, 
-      name: "Ayesha Malik", 
-      email: "ayesha@example.com",
-      rating: 5, 
-      comment: "Life saver! Got my bag back with all contents intact. The reporting system is very user-friendly.",
-      date: "2024-03-12",
-      helpful: 32,
-      avatar: "AM"
-    },
-    { 
-      id: 5, 
-      name: "Bilal Hassan", 
-      email: "bilal@example.com",
-      rating: 3, 
-      comment: "Decent platform but response time could be faster. Still helped me find my keys eventually.",
-      date: "2024-03-11",
-      helpful: 8,
-      avatar: "BH"
-    },
-    { 
-      id: 6, 
-      name: "Fatima Zahra", 
-      email: "fatima@example.com",
-      rating: 5, 
-      comment: "Absolutely fantastic! The team went above and beyond to help me locate my lost documents. Forever grateful!",
-      date: "2024-03-10",
-      helpful: 45,
-      avatar: "FZ"
-    },
-    { 
-      id: 7, 
-      name: "Omar Farooq", 
-      email: "omar@example.com",
-      rating: 4, 
-      comment: "Very helpful platform. Found my laptop charger through this site. Would definitely recommend.",
-      date: "2024-03-09",
-      helpful: 15,
-      avatar: "OF"
-    },
-    { 
-      id: 8, 
-      name: "Zara Ahmed", 
-      email: "zara@example.com",
-      rating: 5, 
-      comment: "Best lost and found platform ever! Quick response and very professional. 10/10 experience.",
-      date: "2024-03-08",
-      helpful: 28,
-      avatar: "ZA"
-    }
-  ];
+  const { data, isLoading } = useGetAllReviewsQuery();
+  const [deleteReview] = useDeleteReviewMutation();
 
-  const ratingOptions = ["All Ratings", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"];
+  const reviewsData = data?.reviews || [];
+
+  const reviews = useMemo(() => {
+    return reviewsData.map((review) => ({
+      id: review._id,
+      name: review?.user?.name || "Unknown User",
+      email: review?.user?.email || "No Email",
+      rating: review?.rating || 0,
+      comment: review?.comment || "",
+      helpful: review?.helpful || 0,
+      date: review?.createdAt || new Date(),
+      avatar:
+        review?.user?.name
+          ?.split(" ")
+          ?.map((w) => w[0])
+          ?.join("")
+          ?.slice(0, 2)
+          ?.toUpperCase() || "U",
+    }));
+  }, [reviewsData]);
 
   const filteredReviews = useMemo(() => {
-    let filtered = reviews.filter(review => {
-      const matchesSearch = review.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    let filtered = reviews.filter((review) => {
+      const matchesSearch =
+        review.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         review.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         review.comment.toLowerCase().includes(searchTerm.toLowerCase());
-      
+
       let matchesRating = true;
+
       if (selectedRating !== "All Ratings") {
-        const ratingValue = parseInt(selectedRating);
-        matchesRating = review.rating === ratingValue;
+        matchesRating = review.rating === parseInt(selectedRating);
       }
-      
+
       return matchesSearch && matchesRating;
     });
-    
-    return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [searchTerm, selectedRating]);
+
+    return filtered.sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+  }, [reviews, searchTerm, selectedRating]);
 
   const totalPages = Math.ceil(filteredReviews.length / itemsPerPage);
+
   const paginatedReviews = filteredReviews.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteReview(id).unwrap();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const renderStars = (rating) => {
     const stars = [];
@@ -136,228 +103,176 @@ function UserReviews() {
 
   const stats = {
     total: reviews.length,
-    average: (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1),
-    fiveStar: reviews.filter(r => r.rating === 5).length,
-    fourStar: reviews.filter(r => r.rating === 4).length,
-    threeStar: reviews.filter(r => r.rating === 3).length
+    average:
+      reviews.length > 0
+        ? (reviews.reduce((a, b) => a + b.rating, 0) / reviews.length).toFixed(1)
+        : "0.0",
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      <div className="pt-20 px-4 sm:px-6 lg:px-8 lg:pl-72">
-        <div className="w-full max-w-7xl mx-auto">
-          
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">User Reviews</h1>
-                <p className="text-slate-500 mt-1 text-sm">Read what users say about their experience</p>
-              </div>
+    <div className="min-h-screen bg-slate-50">
+      <div className="pt-20 px-4 sm:px-6 lg:px-8 md:pl-72">
+        <div className="max-w-360 mx-auto">
+
+          {/* HEADER */}
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900">
+                User Reviews
+              </h1>
+              <p className="text-slate-500 mt-2 text-sm sm:text-base">
+                Manage and analyze user feedback
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm border border-slate-200">
+              <span>{reviews.length} total reviews</span>
             </div>
           </div>
 
-          {/* Stats Overview */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-500">Total Reviews</p>
-                  <p className="text-2xl font-bold text-slate-800 mt-1">{stats.total}</p>
-                </div>
-                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                  <FaComment className="text-blue-500" />
-                </div>
-              </div>
+          {/* STATS */}
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mb-6">
+
+            <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+              <p className="text-sm text-slate-500">Total Reviews</p>
+              <p className="mt-2 text-3xl font-semibold text-slate-900">{stats.total}</p>
             </div>
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-500">Average Rating</p>
-                  <div className="flex items-center gap-1 mt-1">
-                    <p className="text-2xl font-bold text-slate-800">{stats.average}</p>
-                    <FaStar className="text-yellow-400 text-sm" />
-                  </div>
-                </div>
-                <div className="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center">
-                  <FaStar className="text-yellow-500" />
-                </div>
-              </div>
+
+            <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+              <p className="text-sm text-slate-500">Average Rating</p>
+              <p className="mt-2 text-3xl font-semibold text-yellow-600">
+                {stats.average} ⭐
+              </p>
             </div>
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-500">5 Star Reviews</p>
-                  <p className="text-2xl font-bold text-emerald-600 mt-1">{stats.fiveStar}</p>
-                </div>
-                <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
-                  <FaStar className="text-emerald-500" />
-                </div>
-              </div>
+
+            <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+              <p className="text-sm text-slate-500">Positive Reviews</p>
+              <p className="mt-2 text-3xl font-semibold text-green-600">
+                {reviews.filter(r => r.rating >= 4).length}
+              </p>
             </div>
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-500">4+ Star Reviews</p>
-                  <p className="text-2xl font-bold text-purple-600 mt-1">{stats.fourStar + stats.fiveStar}</p>
-                </div>
-                <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
-                  <FaThumbsUp className="text-purple-500" />
-                </div>
-              </div>
-            </div>
+
           </div>
 
-          {/* Search & Filter */}
-          <div className="mb-6">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-              <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1 relative">
-                  <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-                  <input
-                    type="text"
-                    placeholder="Search by name, email, or review content..."
-                    value={searchTerm}
-                    onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                    className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                  />
-                  {searchTerm && (
-                    <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
-                      <FaTimes size={12} />
-                    </button>
-                  )}
-                </div>
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="lg:hidden flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-50 border rounded-lg"
-                >
-                  <FaFilter size={12} /> Filters
-                </button>
-                <div className={`${showFilters ? 'flex' : 'hidden'} lg:flex gap-3`}>
-                  <select
-                    value={selectedRating}
-                    onChange={(e) => { setSelectedRating(e.target.value); setCurrentPage(1); }}
-                    className="px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm cursor-pointer"
-                  >
-                    {ratingOptions.map(opt => <option key={opt}>{opt}</option>)}
-                  </select>
-                </div>
-              </div>
+          {/* FILTERS */}
+          <div className="grid gap-4 md:grid-cols-2 mb-6">
+            <div className="bg-white rounded-3xl border border-slate-200 p-4 flex items-center gap-3">
+              <FaSearch className="text-slate-400" />
+              <input
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search by name, email, or comment"
+                className="w-full bg-transparent outline-none text-slate-700 placeholder:text-slate-400"
+              />
             </div>
+            <label className="flex flex-col gap-2 bg-white rounded-3xl border border-slate-200 p-4">
+              <span className="text-sm font-medium text-slate-700">Rating Filter</span>
+              <select
+                value={selectedRating}
+                onChange={(e) => {
+                  setSelectedRating(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="bg-transparent outline-none text-slate-700"
+              >
+                <option>All Ratings</option>
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+              </select>
+            </label>
           </div>
 
-          {/* Reviews Grid */}
-          {paginatedReviews.length > 0 ? (
-            <>
-              <div className="space-y-4">
+          {/* REVIEWS LIST */}
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            {isLoading ? (
+              <div className="p-10 text-center text-slate-500">Loading reviews...</div>
+            ) : paginatedReviews.length === 0 ? (
+              <div className="p-10 text-center text-slate-500">No reviews found</div>
+            ) : (
+              <div className="divide-y divide-slate-200">
                 {paginatedReviews.map((review) => (
-                  <div key={review.id} className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-all">
-                    <div className="p-5">
-                      <div className="flex items-start gap-4">
-                        {/* Avatar */}
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-semibold text-sm">{review.avatar}</span>
+                  <article
+                    key={review.id}
+                    className="p-5 sm:p-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-700 text-sm">
+                          {review.avatar}
                         </div>
-                        
-                        {/* Content */}
-                        <div className="flex-1">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                            <div>
-                              <h3 className="font-semibold text-slate-800">{review.name}</h3>
-                              <p className="text-xs text-slate-400">{review.email}</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="flex gap-0.5">
-                                {renderStars(review.rating)}
-                              </div>
-                              <span className="text-xs text-slate-500 ml-1">{review.rating}.0</span>
-                            </div>
-                          </div>
-                          
-                          <p className="text-slate-600 text-sm leading-relaxed mb-3">{review.comment}</p>
-                          
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="flex items-center gap-1.5">
-                                <FaCalendarAlt className="text-slate-400 text-xs" />
-                                <span className="text-xs text-slate-500">{new Date(review.date).toLocaleDateString()}</span>
-                              </div>
-                              <div className="flex items-center gap-1.5">
-                                <FaThumbsUp className="text-slate-400 text-xs" />
-                                <span className="text-xs text-slate-500">{review.helpful} found helpful</span>
-                              </div>
-                            </div>
-                          </div>
+                        <div>
+                          <p className="text-lg font-semibold text-slate-900">
+                            {review.name}
+                          </p>
+                          <p className="text-sm text-slate-500">{review.email}</p>
                         </div>
                       </div>
+                      <div className="flex items-center gap-2 mb-2">
+                        {renderStars(review.rating)}
+                        <span className="text-sm text-slate-600">({review.rating})</span>
+                      </div>
+                      <p className="text-sm text-slate-600 mb-2">
+                        {review.comment}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        Posted on: {new Date(review.date).toLocaleDateString()}
+                      </p>
                     </div>
-                  </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 gap-3">
+                      <div className="flex items-center gap-1 text-sm text-slate-500">
+                        <FaThumbsUp />
+                        {review.helpful}
+                      </div>
+                      <button
+                        onClick={() => handleDelete(review.id)}
+                        className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-red-50 text-red-600 transition hover:bg-red-100"
+                        aria-label="Delete review"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  </article>
                 ))}
               </div>
+            )}
+          </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-6">
-                  <div className="text-xs text-slate-500">
-                    Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredReviews.length)} of {filteredReviews.length} reviews
-                  </div>
-                  <div className="flex gap-1">
-                    <button
-                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                      disabled={currentPage === 1}
-                      className="p-2 border rounded-lg bg-white disabled:opacity-50 hover:bg-slate-50"
-                    >
-                      <FaChevronLeft size={12} />
-                    </button>
-                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                      let pageNum;
-                      if (totalPages <= 5) {
-                        pageNum = i + 1;
-                      } else if (currentPage <= 3) {
-                        pageNum = i + 1;
-                      } else if (currentPage >= totalPages - 2) {
-                        pageNum = totalPages - 4 + i;
-                      } else {
-                        pageNum = currentPage - 2 + i;
-                      }
-                      return (
-                        <button
-                          key={pageNum}
-                          onClick={() => setCurrentPage(pageNum)}
-                          className={`w-8 h-8 rounded-lg text-sm ${
-                            currentPage === pageNum
-                              ? "bg-blue-500 text-white"
-                              : "border bg-white hover:bg-slate-50"
-                          }`}
-                        >
-                          {pageNum}
-                        </button>
-                      );
-                    })}
-                    <button
-                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                      disabled={currentPage === totalPages}
-                      className="p-2 border rounded-lg bg-white disabled:opacity-50 hover:bg-slate-50"
-                    >
-                      <FaChevronRight size={12} />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-              <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaSearch className="text-slate-400 text-3xl" />
+          {/* PAGINATION */}
+          {totalPages > 1 && (
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-3xl bg-white px-4 py-4 shadow-sm border border-slate-200">
+              <div className="text-sm text-slate-600">
+                Showing {paginatedReviews.length} of {filteredReviews.length} reviews
               </div>
-              <h3 className="text-lg font-medium text-slate-800 mb-1">No reviews found</h3>
-              <p className="text-slate-500 text-sm">Try adjusting your search or filter criteria</p>
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                  className="inline-flex h-11 items-center justify-center rounded-full border border-slate-200 px-4 text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <FaChevronLeft />
+                </button>
+                <span className="min-w-18 text-center text-sm font-semibold text-slate-700">
+                  {currentPage} / {totalPages}
+                </span>
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                  className="inline-flex h-11 items-center justify-center rounded-full border border-slate-200 px-4 text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <FaChevronRight />
+                </button>
+              </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
   );
 }
-
 export default UserReviews;

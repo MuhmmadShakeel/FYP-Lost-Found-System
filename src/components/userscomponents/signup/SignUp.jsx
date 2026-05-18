@@ -62,14 +62,14 @@ function SignUp() {
   };
 
   return (
-    <section className="flex items-center justify-center bg-[#f4f7ff] py-18 mt-8">
+    <section className="flex items-center justify-center bg-[#f4f7ff] py-16 px-4">
 
-      <div className="w-[850px] h-[480px] grid grid-cols-2 bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div className="w-full max-w-4xl min-h-[560px] grid grid-cols-1 md:grid-cols-2 bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
 
         {/* LEFT FORM */}
         <div className="p-8 flex flex-col justify-center" data-aos="fade-right">
 
-          <h2 className="text-2xl font-bold text-[#203C8B] mb-1">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-[#203C8B] mb-1 whitespace-nowrap">
             Create Account
           </h2>
 
@@ -127,7 +127,7 @@ function SignUp() {
         </div>
 
         {/* RIGHT IMAGE */}
-        <div className="relative" data-aos="fade-left">
+        <div className="relative min-h-full" data-aos="fade-left">
           <img
             src="https://i.pinimg.com/736x/26/47/ed/2647ed6ee48e26fb366a7a206ad402e1.jpg"
             alt="signup"

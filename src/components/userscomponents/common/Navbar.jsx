@@ -53,7 +53,7 @@ function Navbar() {
             <li key={index}>
               <Link
                 to={item.path}
-                className="px-4 py-2 rounded-lg hover:bg-white hover:text-[#1E3A8A] transition font-medium"
+                className="px-4 py-2 rounded-lg hover:bg-white hover:text-[#1E3A8A] transition font-medium whitespace-nowrap"
               >
                 {item.name}
               </Link>
@@ -132,7 +132,7 @@ function Navbar() {
       {/* MOBILE MENU */}
       <div
         className={`lg:hidden bg-[#1E3A8A] transition-all duration-300 overflow-hidden ${
-          menuOpen ? "max-h-125 opacity-100" : "max-h-0 opacity-0"
+          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <ul className="flex flex-col px-6 py-4 gap-2">
@@ -179,21 +179,21 @@ function Navbar() {
               <>
                 <Link
                   to="/profile"
-                  className="px-4 py-2 rounded-lg bg-white text-[#1E3A8A] text-center font-semibold"
+                  className="px-4 py-2 rounded-lg bg-white text-[#1E3A8A] text-center font-semibold whitespace-nowrap"
                 >
                   Profile
                 </Link>
 
                 <Link
                   to="/account"
-                  className="px-4 py-2 rounded-lg bg-white text-[#1E3A8A] text-center font-semibold"
+                  className="px-4 py-2 rounded-lg bg-white text-[#1E3A8A] text-center font-semibold whitespace-nowrap"
                 >
                   Account
                 </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 rounded-lg bg-red-500 text-white font-semibold"
+                  className="px-4 py-2 rounded-lg bg-red-500 text-white font-semibold whitespace-nowrap"
                 >
                   Logout
                 </button>
