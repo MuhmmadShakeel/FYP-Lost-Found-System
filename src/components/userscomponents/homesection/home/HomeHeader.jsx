@@ -12,7 +12,7 @@ const HomeHeader = () => {
       description:
         "Report lost belongings instantly and connect with verified finders through a secure digital platform designed for speed, trust, and reliability.",
       image:
-        "https://images.pexels.com/photos/9244751/pexels-photo-9244751.jpeg",
+        "https://i.pinimg.com/1200x/ae/1e/44/ae1e445fc8e23c899258ffcd3b038c00.jpg",
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ const HomeHeader = () => {
       description:
         "Post lost or found items using your mobile phone with accurate details and location tagging to maximize recovery success.",
       image:
-        "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+        "https://i.pinimg.com/1200x/c6/89/92/c68992e35f3347a9bbcc29b480f20e8a.jpg",
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ const HomeHeader = () => {
       description:
         "Our system bridges the gap between owners and finders, promoting honesty, transparency, and social responsibility.",
       image:
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+        "https://i.pinimg.com/1200x/db/ca/0d/dbca0d13cb73075433e596876757b019.jpg",
     },
     {
       id: 4,
@@ -42,7 +42,7 @@ const HomeHeader = () => {
       description:
         "Every interaction is protected with user verification and controlled communication to ensure secure and safe item recovery.",
       image:
-        "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
+        "https://i.pinimg.com/1200x/77/9b/ed/779bed40d241c537ada2c161f2e58b17.jpg",
     },
     {
       id: 5,
@@ -52,7 +52,7 @@ const HomeHeader = () => {
       description:
         "From important documents to beloved pets, we help reunite what truly matters and restore peace of mind.",
       image:
-        "https://images.unsplash.com/photo-1517849845537-4d257902454a",
+        "https://i.pinimg.com/236x/93/b0/3a/93b03ac8d7127c233404d4de8ed9bcca.jpg",
     },
   ];
 
@@ -61,11 +61,11 @@ const HomeHeader = () => {
   useEffect(() => {
     AOS.init({ duration: 800, once: false, offset: 100 });
 
-    
-   //keep index inside array length
+
+    //keep index inside array length
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % slides.length);
-    },5000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -77,9 +77,8 @@ const HomeHeader = () => {
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${
-            index === currentIndex ? "opacity-40" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-40" : "opacity-0"
+            }`}
           style={{ backgroundImage: `url(${slide.image})` }}
         />
       ))}
@@ -134,11 +133,10 @@ const HomeHeader = () => {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`transition-all duration-500 cursor-pointer rounded-full ${
-                currentIndex === index
+              className={`transition-all duration-500 cursor-pointer rounded-full ${currentIndex === index
                   ? "bg-white w-8 h-3 shadow-lg"
                   : "bg-white/40 w-3 h-3 hover:bg-white"
-              }`}
+                }`}
             />
           ))}
         </div>

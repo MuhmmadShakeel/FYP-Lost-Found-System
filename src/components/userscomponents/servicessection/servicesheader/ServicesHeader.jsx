@@ -76,10 +76,10 @@ function ServicesHeader() {
               </p>
 
               <div className="flex gap-4">
-                <button className="px-6 py-3 bg-white text-[#0B1C3D] font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition">
+                <button className="px-6 py-3 cursor-pointer bg-white text-[#0B1C3D] font-semibold rounded-lg shadow-lg hover:bg-gray-200 transition">
                   Explore Services
                 </button>
-                <button className="px-6 py-3 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-[#0B1C3D] transition">
+                <button className="px-6 cursor-pointer py-3 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-[#0B1C3D] transition">
                   Learn More
                 </button>
               </div>
@@ -90,14 +90,14 @@ function ServicesHeader() {
 
       <button
         onClick={prevSlide}
-        className="absolute top-0 left-0 h-full px-6 flex items-center text-white text-3xl font-bold hover:bg-black/20 transition"
+        className="absolute cursor-pointer top-0 left-0 h-full px-6 flex items-center text-white text-3xl font-bold hover:bg-black/20 transition"
       >
         ‹
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute top-0 right-0 h-full px-6 flex items-center text-white text-3xl font-bold hover:bg-black/20 transition"
+        className="absolute top-0 cursor-pointer right-0 h-full px-6 flex items-center text-white text-3xl font-bold hover:bg-black/20 transition"
       >
         ›
       </button>

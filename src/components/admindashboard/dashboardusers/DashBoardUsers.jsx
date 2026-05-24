@@ -32,7 +32,7 @@ function DashBoardUsers() {
   const handleDelete = async (id) => {
     try {
       await deleteUser(id).unwrap();
-      refetch(); // refresh UI
+      refetch(); 
     } catch (err) {
       console.error("Delete user error:", err);
     }
@@ -67,7 +67,7 @@ function DashBoardUsers() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="pt-20 px-4 sm:px-6 lg:px-8 md:pl-72">
+      <div className="pt-20 px-8 sm:px-6 lg:px-8 md:pl-72">
         <div className="max-w-360 mx-auto">
 
           {/* HEADER */}
@@ -80,7 +80,7 @@ function DashBoardUsers() {
                 Manage and view all registered users
               </p>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm border border-slate-200">
+            <div className="inline-flex items-center gap-5 rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm border border-slate-200">
               <span>{users.length} total users</span>
             </div>
           </div>

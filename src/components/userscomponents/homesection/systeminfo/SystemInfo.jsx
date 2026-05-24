@@ -7,9 +7,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const images = [
-  "https://abcloudz.com/wp-content/uploads/2021/01/perdidoonline-2-1024x536.jpg?x14058",
-  "https://thumbs.dreamstime.com/b/man-returning-lost-wallet-to-found-service-worker-people-helping-finding-stuff-cartoon-young-female-concept-flat-vector-200147444.jpg",
-  "https://thumbs.dreamstime.com/b/little-boy-empty-wallet-hand-flat-vector-illustration-little-boy-empty-wallet-hand-flat-vector-illustration-upset-183279683.jpg"
+  "https://i.pinimg.com/1200x/98/e9/97/98e9979ef1e6c7985bff181a548191e2.jpg",
+  "https://i.pinimg.com/1200x/c3/d6/6a/c3d66aaf47faee1fd7da8ed909c6fcc7.jpg",
+  "https://www.shutterstock.com/image-vector/grunge-rubber-stamp-text-lost-260nw-2188447711.jpg"
 ];
 
 function SystemInfo() {

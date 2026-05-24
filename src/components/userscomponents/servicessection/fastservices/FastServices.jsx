@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+import {Link} from 'react-router-dom'
 
 function FastServices() {
   useEffect(() => {
@@ -27,7 +27,7 @@ function FastServices() {
         {/* LEFT IMAGE */}
         <div className="relative flex justify-center" data-aos="fade-right">
           <img
-            src="https://i.pinimg.com/1200x/ad/76/d2/ad76d2fb58fe3caed986276cda5edda8.jpg"
+            src="https://i.pinimg.com/1200x/14/dd/4b/14dd4b3b2149e1afee257b462c2525b5.jpg"
             alt="Report Lost Item"
             className="w-[280px] md:w-[340px] rounded-2xl shadow-xl object-cover"
           />
@@ -66,15 +66,15 @@ function FastServices() {
             bridges the gap with efficiency and transparency.
           </p>
 
-          <button className="bg-[#0B1C3D] text-white cursor-pointer px-10 py-3 rounded-lg text-lg font-semibold shadow-lg hover:bg-[#132a5c] transition-all duration-300">
+          <Link to="/services" className="bg-[#0B1C3D] text-white cursor-pointer px-10 py-3 rounded-lg text-lg font-semibold shadow-lg hover:bg-[#132a5c] transition-all duration-300">
             Explore Services
-          </button>
+          </Link>
         </div>
 
         {/* RIGHT IMAGE */}
         <div className="relative flex justify-center" data-aos="fade-left">
           <img
-            src="https://i.pinimg.com/736x/29/43/59/2943591324acb2e1dc9c1d2115d8c6fe.jpg"
+            src="https://i.pinimg.com/736x/60/5b/85/605b85c4e5cbb08d4ca4167d9405e689.jpg"
             alt="Register Found Item"
             className="w-[300px] md:w-[340px] rounded-2xl shadow-xl object-cover"
           />
@@ -122,5 +122,4 @@ function FastServices() {
     </section>
   );
 }
-
 export default FastServices;

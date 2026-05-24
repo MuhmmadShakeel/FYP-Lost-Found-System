@@ -35,7 +35,7 @@ function OurServices() {
       description:
         "Before final handover, our secure verification process confirms rightful ownership through identity validation and item-specific confirmation checkpoints — ensuring safe and fraud-free returns.",
       image:
-        "https://images.pexels.com/photos/5380642/pexels-photo-5380642.jpeg",
+        "https://cdn.authenticating.com/public/cms/cm9jj09yk001odgoe13pyhkwt_md.jpg",
     },
   ];
 
@@ -103,10 +103,6 @@ function OurServices() {
               <p className="text-gray-600 text-sm leading-relaxed">
                 {service.description}
               </p>
-
-              <button className="mt-4 px-6 py-2 text-sm bg-[#0B1C3D] text-white rounded-md hover:bg-[#132a5c] transition-all duration-300 shadow-md hover:shadow-lg">
-                Learn More
-              </button>
             </div>
           </div>
         ))}
