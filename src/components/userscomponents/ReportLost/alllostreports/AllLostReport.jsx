@@ -368,8 +368,11 @@ function LostPost() {
                   </div>
                 </div>
 
-                {/* FORM COMPONENT */}
-                <ReturnBackForm />
+{/* FORM COMPONENT */}
+                 <ReturnBackForm
+                   selectedLostItem={selectedItem}
+                   onClose={() => setOpenReturnModal(false)}
+                 />
 
               </div>
             </div>

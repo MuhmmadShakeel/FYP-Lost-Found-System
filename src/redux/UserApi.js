@@ -4,7 +4,13 @@ export const userApi = createApi({
 
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5000/api/v1/user',
-    credentials: 'include',
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
 
   tagTypes: ['User'],

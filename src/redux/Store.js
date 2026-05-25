@@ -5,6 +5,7 @@ import { lostPostApi } from "./LostPost";
 import { foundPostApi } from "./FoundPost";
 import { ProfileApi } from "./Profile";
 import { claimApi } from "./ClaimApi";
+import { returnApi } from "./ReturnApi";
 export const store = configureStore({
     reducer: {
         [userApi.reducerPath]: userApi.reducer,
@@ -13,7 +14,8 @@ export const store = configureStore({
         [foundPostApi.reducerPath]: foundPostApi.reducer,
         [ProfileApi.reducerPath]: ProfileApi.reducer,
         [claimApi.reducerPath]: claimApi.reducer,
+        [returnApi.reducerPath]: returnApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(userApi.middleware, reviewsApi.middleware, lostPostApi.middleware, foundPostApi.middleware, ProfileApi.middleware,claimApi.middleware),
+        getDefaultMiddleware().concat(userApi.middleware, reviewsApi.middleware, lostPostApi.middleware, foundPostApi.middleware, ProfileApi.middleware,claimApi.middleware, returnApi.middleware),
 });

@@ -5,23 +5,26 @@ export const reviewsApi = createApi({
 
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api/v2/reviews",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
 
   // ✅ Correct placement
   tagTypes: ["Reviews"],
 
   endpoints: (builder) => ({
-
     // 🔥 CREATE REVIEW
     createReviews: builder.mutation({
       query: (data) => ({
         url: "/createreviews",
         method: "POST",
         body: data,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        // Removed headers because they are set by prepareHeaders
       }),
 
       // ✅ correct spelling
@@ -43,14 +46,11 @@ export const reviewsApi = createApi({
       query: (id) => ({
         url: `/deletereview/${id}`,
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        // Removed headers because they are set by prepareHeaders
       }),
 
       invalidatesTags: ["Reviews"],
     }),
-
   }),
 });
 

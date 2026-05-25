@@ -6,37 +6,37 @@ import {
   FaTimes,
   FaBoxOpen,
   FaSearchLocation,
-  FaStar,
+  FaFileImage,
 } from "react-icons/fa";
 import ProfilePanel from "./useraccountpanel/ProfilePanel.jsx";
 import LostPostsPanel from "./useraccountpanel/LostPostsPanel.jsx";
 import FoundPostsPanel from "./useraccountpanel/FoundPostsPanel.jsx";
-import ReviewsPanel from "./useraccountpanel/ReviewsPanel.jsx";
+import ClaimPanel from "./useraccountpanel/ClaimPanel.jsx";
 
 function UserAccount({ open, setOpen }) {
   const [activeTab, setActiveTab] = useState("profile");
 
-  const tabs = [
-    { key: "profile", label: "Profile", icon: <FaUserCircle /> },
-    { key: "lost", label: "Lost Items", icon: <FaBoxOpen /> },
-    { key: "found", label: "Found Items", icon: <FaSearchLocation /> },
-    { key: "reviews", label: "Reviews", icon: <FaStar /> },
-  ];
+    const tabs = [
+      { key: "profile", label: "Profile", icon: <FaUserCircle /> },
+      { key: "lost", label: "Lost Items", icon: <FaBoxOpen /> },
+      { key: "found", label: "Found Items", icon: <FaSearchLocation /> },
+      { key: "claims", label: "Claims", icon: <FaFileImage /> },
+    ];
 
-  const renderActivePanel = () => {
-    switch (activeTab) {
-      case "profile":
-        return <ProfilePanel />;
-      case "lost":
-        return <LostPostsPanel />;
-      case "found":
-        return <FoundPostsPanel />;
-      case "reviews":
-        return <ReviewsPanel />;
-      default:
-        return <ProfilePanel />;
-    }
-  };
+   const renderActivePanel = () => {
+     switch (activeTab) {
+       case "profile":
+         return <ProfilePanel />;
+       case "lost":
+         return <LostPostsPanel />;
+       case "found":
+         return <FoundPostsPanel />;
+       case "claims":
+         return <ClaimPanel />;
+       default:
+         return <ProfilePanel />;
+     }
+   };
 
   return (
     <>
