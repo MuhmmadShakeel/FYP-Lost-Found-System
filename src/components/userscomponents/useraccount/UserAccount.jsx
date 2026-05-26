@@ -7,11 +7,13 @@ import {
   FaBoxOpen,
   FaSearchLocation,
   FaFileImage,
+  FaArrowLeft,
 } from "react-icons/fa";
 import ProfilePanel from "./useraccountpanel/ProfilePanel.jsx";
 import LostPostsPanel from "./useraccountpanel/LostPostsPanel.jsx";
 import FoundPostsPanel from "./useraccountpanel/FoundPostsPanel.jsx";
 import ClaimPanel from "./useraccountpanel/ClaimPanel.jsx";
+import ReturnPanel from "./useraccountpanel/ReturnPanel.jsx";
 
 function UserAccount({ open, setOpen }) {
   const [activeTab, setActiveTab] = useState("profile");
@@ -21,22 +23,25 @@ function UserAccount({ open, setOpen }) {
       { key: "lost", label: "Lost Items", icon: <FaBoxOpen /> },
       { key: "found", label: "Found Items", icon: <FaSearchLocation /> },
       { key: "claims", label: "Claims", icon: <FaFileImage /> },
+      { key: "returns", label: "Returns", icon: <FaArrowLeft /> },
     ];
 
-   const renderActivePanel = () => {
-     switch (activeTab) {
-       case "profile":
-         return <ProfilePanel />;
-       case "lost":
-         return <LostPostsPanel />;
-       case "found":
-         return <FoundPostsPanel />;
-       case "claims":
-         return <ClaimPanel />;
-       default:
-         return <ProfilePanel />;
-     }
-   };
+    const renderActivePanel = () => {
+      switch (activeTab) {
+        case "profile":
+          return <ProfilePanel />;
+        case "lost":
+          return <LostPostsPanel />;
+        case "found":
+          return <FoundPostsPanel />;
+        case "claims":
+          return <ClaimPanel />;
+        case "returns":
+          return <ReturnPanel />;
+        default:
+          return <ProfilePanel />;
+      }
+    };
 
   return (
     <>

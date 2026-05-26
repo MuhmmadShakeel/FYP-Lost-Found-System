@@ -29,10 +29,26 @@ export const claimApi = createApi({
     // ================= GET CLAIM INFO =================
     getClaimInfo: builder.query({
       query: () => ({
-        url: `/getclaiminfo`,
+        url: `getclaiminfo`,
         method: "GET",
       }),
       providesTags: ["Claim"],
+    }),
+    // ================= GET ALL CLAIMS =================
+    getAllClaims: builder.query({
+      query: () => ({
+        url: `allgetclaims`,
+        method: "GET",
+      }),
+      providesTags: ["Claim"],
+    }),
+    // ================= DELETE CLAIM ITEM =================
+    deleteClaimItem: builder.mutation({
+      query: (claimId) => ({
+        url: `claimitem/${claimId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Claim"],
     }),
   }),
 });
@@ -40,4 +56,6 @@ export const claimApi = createApi({
 export const {
   useCreateClaimItemMutation,
   useGetClaimInfoQuery,
+  useGetAllClaimsQuery,
+  useDeleteClaimItemMutation,
 } = claimApi;

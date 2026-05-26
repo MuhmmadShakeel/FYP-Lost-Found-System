@@ -4,18 +4,16 @@ import {
   Phone,
   FileText,
   Upload,
-  ShieldCheck,
   X,
   Loader2,
   CheckCircle2,
 } from "lucide-react";
 import { useCreateClaimItemMutation } from "../../../redux/ClaimApi";
+import { toast } from "react-toastify";
 
 function ClaimForm({ onClose, selectedReport }) {
   const [createClaimItem, { isLoading }] = useCreateClaimItemMutation();
   const [preview, setPreview] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -37,13 +35,12 @@ function ClaimForm({ onClose, selectedReport }) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type and size (optional)
     if (!file.type.startsWith("image/")) {
-      setErrorMessage("Please upload an image file");
+      toast.error("Please upload an image file");
       return;
     }
     if (file.size > 5 * 1024 * 1024) { // 5MB limit
-      setErrorMessage("Image size should be less than 5MB");
+      toast.error("Image size should be less than 5MB");
       return;
     }
 
@@ -53,7 +50,6 @@ function ClaimForm({ onClose, selectedReport }) {
     }));
 
     setPreview(URL.createObjectURL(file));
-    setErrorMessage(""); // Clear error on valid file
   };
 
   const removeImage = () => {
@@ -65,37 +61,33 @@ function ClaimForm({ onClose, selectedReport }) {
       proofImage: null,
     }));
     setPreview(null);
-    setErrorMessage("");
   };
 
   // ================= SUBMIT =================
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Clear previous error
 
     // Basic validation
     if (!formData.fullName.trim()) {
-      setErrorMessage("Full name is required");
+      toast.error("Full name is required");
       return;
     }
     if (!formData.phone.trim()) {
-      setErrorMessage("Phone number is required");
+      toast.error("Phone number is required");
       return;
     }
-    // Simple phone validation (digits and possibly +, -, spaces)
     const phoneRegex = /^[\d\s\+-]+$/;
     if (!phoneRegex.test(formData.phone)) {
-      setErrorMessage("Please enter a valid phone number");
+      toast.error("Please enter a valid phone number");
       return;
     }
     if (!formData.reason.trim()) {
-      setErrorMessage("Ownership details are required");
+      toast.error("Ownership details are required");
       return;
     }
 
-    // ❌ SAFE CHECK (VERY IMPORTANT)
     if (!selectedReport?._id) {
-      setErrorMessage("Item not found. Please select again.");
+      toast.error("Item not found. Please select again.");
       return;
     }
 
@@ -114,7 +106,7 @@ function ClaimForm({ onClose, selectedReport }) {
         formData: form,
       }).unwrap();
 
-      setSuccessMessage(res?.message || "Claim submitted successfully");
+      toast.success(res?.message || "Claim submitted successfully!");
 
       // Reset form
       setFormData({
@@ -128,181 +120,148 @@ function ClaimForm({ onClose, selectedReport }) {
       }
       setPreview(null);
 
-      // Close after delay
-      setTimeout(() => {
-        setSuccessMessage("");
-        onClose?.();
-      }, 1500);
+      // Close modal
+      onClose?.();
     } catch (error) {
       console.error("Claim submission error:", error);
       const errorMsg =
         error?.data?.message ||
         error?.error ||
         "Failed to submit claim. Please try again.";
-      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="bg-white rounded-3xl border shadow-xl overflow-hidden">
-        {/* HEADER */}
-        <div className="bg-gradient-to-r from-[#0B1C3D] to-[#17346E] p-5 text-white">
-          <div className="flex items-center gap-3">
-            <ShieldCheck />
-            <div>
-              <p className="text-xs opacity-70">Secure Claim</p>
-              <h2 className="text-lg font-bold">Claim Item</h2>
-            </div>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {/* NAME */}
+      <div>
+        <label htmlFor="fullName" className="block text-sm font-semibold text-slate-700 mb-1.5">
+          Full Name
+        </label>
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+            <User className="h-5 w-5 text-slate-400" />
           </div>
+          <input
+            id="fullName"
+            name="fullName"
+            type="text"
+            value={formData.fullName}
+            onChange={handleChange}
+            placeholder="Enter your full name"
+            className="w-full rounded-2xl border border-slate-200 pl-11 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#0B1C3D] focus:border-[#0B1C3D] transition-all bg-slate-50/50 hover:bg-slate-50 focus:bg-white"
+            required
+          />
         </div>
-
-        {/* ITEM */}
-        {selectedReport && (
-          <div className="p-4">
-            <div className="flex gap-3 bg-gray-50 p-3 rounded-xl">
-              <img
-                src={selectedReport?.foundimage?.url}
-                alt="Found item"
-                className="w-16 h-16 rounded-lg object-cover"
-              />
-              <div>
-                <h3 className="font-bold">{selectedReport?.name}</h3>
-                <p className="text-sm text-gray-500">
-                  {selectedReport?.location}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ERROR */}
-        {errorMessage && (
-          <div className="mx-4 mt-3 bg-red-50 p-3 rounded-xl flex items-center gap-2">
-            <X className="text-red-600" size={16} />
-            <p className="text-red-700 text-sm">{errorMessage}</p>
-          </div>
-        )}
-
-        {/* SUCCESS */}
-        {successMessage && (
-          <div className="mx-4 mt-3 bg-green-50 p-3 rounded-xl flex items-center gap-2">
-            <CheckCircle2 className="text-green-600" />
-            <p className="text-green-700 text-sm">{successMessage}</p>
-          </div>
-        )}
-
-        {/* FORM */}
-        <form onSubmit={handleSubmit} className="p-5 space-y-4">
-          {/* NAME */}
-          <div>
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name
-            </label>
-            <input
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="Enter your full name"
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0B1C3D] focus:border-[#0B1C3D] outline-none"
-              required
-            />
-          </div>
-
-          {/* PHONE */}
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-              Phone Number
-            </label>
-            <input
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="Enter your phone number"
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0B1C3D] focus:border-[#0B1C3D] outline-none"
-              required
-            />
-          </div>
-
-          {/* DETAILS */}
-          <div>
-            <label htmlFor="reason" className="block text-sm font-medium text-gray-700 mb-1">
-              Ownership Details
-            </label>
-            <textarea
-              id="reason"
-              name="reason"
-              value={formData.reason}
-              onChange={handleChange}
-              placeholder="Describe how you own this item"
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0B1C3D] focus:border-[#0B1C3D] outline-none"
-              rows={3}
-              required
-            />
-          </div>
-
-          {/* IMAGE */}
-          <div>
-            <label htmlFor="proofImage" className="block text-sm font-medium text-gray-700 mb-1">
-              Upload Proof (Image)
-            </label>
-            {preview ? (
-              <div className="relative">
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="w-full h-32 object-cover rounded-xl border border-gray-200"
-                />
-                <button
-                  type="button"
-                  onClick={removeImage}
-                  className="absolute top-2 right-2 bg-white p-1 rounded-full hover:bg-gray-100 transition-colors"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ) : (
-              <label
-                htmlFor="proofImage-input"
-                className="block border border-dashed p-6 text-center rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
-              >
-                <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                <p className="mt-2 text-sm text-gray-600">Upload Proof</p>
-                <p className="text-xs text-gray-400">JPG, PNG, GIF (max 5MB)</p>
-                <input
-                  id="proofImage-input"
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleImage}
-                />
-              </label>
-            )}
-          </div>
-
-          {/* BUTTON */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-[#0B1C3D] text-white p-3 rounded-xl flex justify-center gap-2 items-center hover:bg-[#17346E] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="animate-spin h-4 w-4" />
-                <span className="ml-2">Submitting...</span>
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="h-4 w-4" />
-                <span className="ml-2">Submit Claim</span>
-              </>
-            )}
-          </button>
-        </form>
       </div>
-    </div>
+
+      {/* PHONE */}
+      <div>
+        <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 mb-1.5">
+          Phone Number
+        </label>
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+            <Phone className="h-5 w-5 text-slate-400" />
+          </div>
+          <input
+            id="phone"
+            name="phone"
+            type="text"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Enter your phone number"
+            className="w-full rounded-2xl border border-slate-200 pl-11 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#0B1C3D] focus:border-[#0B1C3D] transition-all bg-slate-50/50 hover:bg-slate-50 focus:bg-white"
+            required
+          />
+        </div>
+      </div>
+
+      {/* DETAILS */}
+      <div>
+        <label htmlFor="reason" className="block text-sm font-semibold text-slate-700 mb-1.5">
+          Ownership Details
+        </label>
+        <div className="relative">
+          <div className="pointer-events-none absolute left-4 top-3">
+            <FileText className="h-5 w-5 text-slate-400" />
+          </div>
+          <textarea
+            id="reason"
+            name="reason"
+            value={formData.reason}
+            onChange={handleChange}
+            placeholder="Describe how you own this item (distinct features, proof details...)"
+            className="w-full rounded-2xl border border-slate-200 pl-11 pr-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#0B1C3D] focus:border-[#0B1C3D] transition-all bg-slate-50/50 hover:bg-slate-50 focus:bg-white resize-none"
+            rows={4}
+            required
+          />
+        </div>
+      </div>
+
+      {/* IMAGE UPLOAD */}
+      <div>
+        <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+          Upload Proof (Image)
+        </label>
+        {preview ? (
+          <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50 flex justify-center items-center p-2">
+            <img
+              src={preview}
+              alt="Preview"
+              className="max-h-40 rounded-xl object-contain"
+            />
+            <button
+              type="button"
+              onClick={removeImage}
+              className="absolute top-4 right-4 bg-white/95 hover:bg-white text-slate-700 hover:text-red-600 p-2 rounded-full shadow-md transition-all border border-slate-200"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        ) : (
+          <label
+            htmlFor="proofImage-input"
+            className="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 hover:border-[#0B1C3D] p-6 text-center rounded-2xl cursor-pointer hover:bg-slate-50/50 transition-all group"
+          >
+            <div className="bg-slate-100 group-hover:bg-[#0B1C3D]/5 p-3 rounded-full transition-colors mb-2">
+              <Upload className="h-6 w-6 text-slate-500 group-hover:text-[#0B1C3D]" />
+            </div>
+            <p className="text-sm font-semibold text-slate-700 group-hover:text-[#0B1C3D] transition-colors">
+              Upload Proof Document or Photo
+            </p>
+            <p className="text-xs text-slate-400 mt-1">JPG, PNG, GIF (max 5MB)</p>
+            <input
+              id="proofImage-input"
+              type="file"
+              hidden
+              accept="image/*"
+              onChange={handleImage}
+            />
+          </label>
+        )}
+      </div>
+
+      {/* SUBMIT BUTTON */}
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="w-full bg-[#0B1C3D] text-white p-3.5 rounded-2xl flex justify-center gap-2 items-center hover:bg-[#17346E] transition-all hover:shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-[#0B1C3D] disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm cursor-pointer"
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="animate-spin h-5 w-5" />
+            <span>Submitting Claim...</span>
+          </>
+        ) : (
+          <>
+            <CheckCircle2 className="h-5 w-5" />
+            <span>Submit Claim</span>
+          </>
+        )}
+      </button>
+    </form>
   );
 }
 
