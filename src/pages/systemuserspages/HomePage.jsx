@@ -5,7 +5,7 @@ import OurProgress from '../../components/userscomponents/homesection/visionmiss
 import OurTestimonials from '../../components/userscomponents/homesection/ourtestimnials/Ourtestimonials'
 import Systemservices from '../../components/userscomponents/homesection/systemservices/Systemservices'
 import MobileApp from '../../components/userscomponents/homesection/mobileapp/MobileApp'
-import Reviews from '../../components/userscomponents/homesection/reviews/reviews'
+import Reviews from '../../components/userscomponents/homesection/reviews/Reviews'
 import Faq from '../../components/userscomponents/homesection/faq/Faq'
 function HomePage() {
   return (

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+
+// For animations
 import AOS from "aos";
 import "aos/dist/aos.css";
 
