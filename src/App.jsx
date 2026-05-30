@@ -18,9 +18,9 @@ import LoginPage from "./pages/systemuserspages/LoginPage.jsx";
 import SignUp from "./components/userscomponents/signup/SignUp.jsx";
 import Sidebar from "./components/admindashboard/admincommon/Sidebar.jsx";
 import AdminNav from "./components/admindashboard/admincommon/AdminNav.jsx";
-import Overviewpage from "./pages/adminpages/overviewpage.jsx";
 import AdminLostReportPage from "./pages/adminpages/AdminLostReportPage.jsx";
 import AdminFoundReportPage from "./pages/adminpages/AdminFoundReportPage.jsx";
+import Overviewpage from "./pages/adminpages/Overviewpage.jsx"
 import DashboardUserPage from "./pages/adminpages/DashboardUserPage.jsx";
 import UserReviwsPage from "./pages/adminpages/UserReviwsPage.jsx";
 import { ToastContainer } from 'react-toastify';
