@@ -1,6 +1,6 @@
 import React from 'react'
-import LostHead from '../../components/userscomponents/ReportLost/reportlosthead/LostHead'
-import AllLostReport from '../../components/userscomponents/ReportLost/alllostreports/AllLostReport'
+import LostHead from '../../components/userscomponents/ReportLost/reportlosthead/LostHead.jsx'
+import AllLostReport from '../../components/userscomponents/ReportLost/alllostreports/AllLostReport.jsx'
 
 function ReportLostPage() {
   return (

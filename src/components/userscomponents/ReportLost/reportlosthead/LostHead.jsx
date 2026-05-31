@@ -57,8 +57,7 @@ function LostHead() {
 
         </div>
 
-        {/* Call to Action */}
-        <div className="mt-12">
+        <div className="mt-10">
           <button className="bg-white text-[#0B1C3D] px-10 py-3 rounded-lg font-semibold shadow-lg hover:bg-gray-200 transition-all duration-300">
             Start Posting Now
           </button>
