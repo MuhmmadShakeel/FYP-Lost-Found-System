@@ -1,5 +1,5 @@
 import React from 'react'
-import LostHead from '../../components/userscomponents/ReportLost/ReportLostHead/LostHead'
+import LostHead from '../../components/userscomponents/ReportLost/reportlosthead/LostHead'
 import AllLostReport from '../../components/userscomponents/ReportLost/alllostreports/AllLostReport'
 
 function ReportLostPage() {
@@ -10,5 +10,4 @@ function ReportLostPage() {
     </div>
   )
 }
-
 export default ReportLostPage
