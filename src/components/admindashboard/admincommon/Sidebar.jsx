@@ -6,7 +6,8 @@ import {
   FaUsers,
   FaStar,
   FaBars,
-  FaTimes
+  FaTimes,
+  FaUndoAlt
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
@@ -21,6 +22,8 @@ function Sidebar({ open: controlledOpen, setOpen: setControlledOpen }) {
     { name: "Overview", icon: <FaTachometerAlt />, path: "/admin/overview" },
     { name: "Lost Reports", icon: <FaSearch />, path: "/admin/lostreport" },
     { name: "Found Reports", icon: <FaBoxOpen />, path: "/admin/foundreport" },
+    { name: "Claimed Items", icon: <FaBoxOpen />, path: "/admin/claimeditem" },
+    { name: "Return Items", icon: <FaUndoAlt />, path: "/admin/returnitem" },
     { name: "Users", icon: <FaUsers />, path: "/admin/dashboarduser" },
     { name: "Reviews", icon: <FaStar />, path: "/admin/userreviews" },
   ];

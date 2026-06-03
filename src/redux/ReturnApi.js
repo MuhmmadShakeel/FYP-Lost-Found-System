@@ -4,7 +4,7 @@ export const returnApi = createApi({
   reducerPath: "returnApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v6/return/",
+    baseUrl: "http://localhost:5000/api/v7/return/",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -37,7 +37,7 @@ export const returnApi = createApi({
     // ================= GET ALL RETURNS =================
     getAllReturns: builder.query({
       query: () => ({
-        url: `allreturns`,
+        url: `allgetreturns`,
         method: "GET",
       }),
       providesTags: ["Return"],

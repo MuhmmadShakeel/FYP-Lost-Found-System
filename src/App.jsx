@@ -20,6 +20,8 @@ import Sidebar from "./components/admindashboard/admincommon/Sidebar.jsx";
 import AdminNav from "./components/admindashboard/admincommon/AdminNav.jsx";
 import AdminLostReportPage from "./pages/adminpages/AdminLostReportPage.jsx";
 import AdminFoundReportPage from "./pages/adminpages/AdminFoundReportPage.jsx";
+import AllClaimedItemPage from "./pages/adminpages/AllClaimedItemPage.jsx";
+import ReturnItemPage from "./pages/adminpages/ReturnItemPage.jsx"
 import Overviewpage from "./pages/adminpages/Overviewpage.jsx"
 import DashboardUserPage from "./pages/adminpages/DashboardUserPage.jsx";
 import UserReviwsPage from "./pages/adminpages/UserReviwsPage.jsx";
@@ -74,6 +76,8 @@ function App() {
                   <Route path="overview" element={<Overviewpage />} />
                   <Route path="lostreport" element={<AdminLostReportPage />} />
                   <Route path="foundreport" element={<AdminFoundReportPage />} />
+                  <Route path="claimeditem" element={<AllClaimedItemPage />} />
+                  <Route path="returnitem" element={<ReturnItemPage />} />
                   <Route path="dashboarduser" element={<DashboardUserPage />} />
                   <Route path="userreviews" element={<UserReviwsPage />} />
                 </Routes>

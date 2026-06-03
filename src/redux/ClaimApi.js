@@ -7,8 +7,9 @@ export const claimApi = createApi({
     baseUrl: "http://localhost:5000/api/v6/claim/",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
+      
       if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
     },

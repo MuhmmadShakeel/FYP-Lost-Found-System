@@ -546,6 +546,202 @@ function AllReportsFound() {
           </div>
         )}
 
+        {/* ================= REPORT FOUND MODAL ================= */}
+
+        {openModal && (
+          <div className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
+
+            <div className="relative w-full max-w-lg animate-in zoom-in-95 duration-300">
+
+              {/* CLOSE */}
+              <button
+                onClick={() => setOpenModal(false)}
+                className="absolute -top-4 -right-4 z-50 bg-white text-[#0B1C3D] w-11 h-11 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="bg-white rounded-[32px] w-full max-w-lg p-6 relative max-h-[90vh] overflow-y-auto shadow-[0_20px_80px_rgba(0,0,0,0.25)]">
+
+                {/* HEADER */}
+                <div className="mb-7">
+
+                  <h2 className="text-3xl font-bold text-[#0B1C3D]">
+                    Report Found Item
+                  </h2>
+
+                  <p className="text-gray-500 mt-2 text-sm">
+                    Share details about the item you found.
+                  </p>
+
+                </div>
+
+                {/* FORM */}
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-5"
+                >
+
+                  {/* NAME */}
+                  <div>
+
+                    <label className="block text-sm font-semibold text-[#0B1C3D] mb-2">
+                      Item Name
+                    </label>
+
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      placeholder="e.g. Black Wallet"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+                    />
+
+                  </div>
+
+                  {/* DESCRIPTION */}
+                  <div>
+
+                    <label className="block text-sm font-semibold text-[#0B1C3D] mb-2">
+                      Description
+                    </label>
+
+                    <textarea
+                      rows={4}
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      required
+                      placeholder="Describe the item..."
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 resize-none focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+                    />
+
+                  </div>
+
+                  {/* LOCATION */}
+                  <div>
+
+                    <label className="block text-sm font-semibold text-[#0B1C3D] mb-2">
+                      Found Location
+                    </label>
+
+                    <input
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter location"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+                    />
+
+                  </div>
+
+                  {/* CONTACT INFO */}
+                  <div>
+
+                    <label className="block text-sm font-semibold text-[#0B1C3D] mb-2">
+                      Contact Info
+                    </label>
+
+                    <input
+                      type="text"
+                      name="contactInfo"
+                      value={formData.contactInfo}
+                      onChange={handleChange}
+                      required
+                      placeholder="Your contact details"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+                    />
+
+                  </div>
+
+                  {/* IMAGE */}
+                  <div>
+
+                    <label className="block text-sm font-semibold text-[#0B1C3D] mb-3">
+                      Upload Image
+                    </label>
+
+                    {imagePreview ? (
+                      <div className="relative rounded-3xl overflow-hidden border border-gray-200">
+
+                        <img
+                          src={imagePreview}
+                          alt="preview"
+                          className="w-full h-44 object-cover"
+                        />
+
+                        <button
+                          type="button"
+                          onClick={handleRemoveImage}
+                          className="absolute top-3 right-3 bg-white text-red-500 w-9 h-9 rounded-full flex items-center justify-center shadow-md"
+                        >
+                          <X size={16} />
+                        </button>
+
+                      </div>
+                    ) : (
+                      <label className="w-full border-2 border-dashed border-gray-300 rounded-3xl py-10 flex flex-col items-center justify-center cursor-pointer hover:border-[#0B1C3D] hover:bg-blue-50/40 transition-all duration-300 group">
+
+                        <div className="w-14 h-14 rounded-2xl bg-[#0B1C3D]/10 flex items-center justify-center mb-4">
+
+                          <Upload
+                            size={24}
+                            className="text-[#0B1C3D]"
+                          />
+
+                        </div>
+
+                        <p className="text-sm font-medium text-gray-700">
+                          Upload Found Item Image
+                        </p>
+
+                        <p className="text-xs text-gray-400 mt-1">
+                          PNG, JPG or JPEG
+                        </p>
+
+                        <input
+                          type="file"
+                          hidden
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          required
+                        />
+
+                      </label>
+                    )}
+                  </div>
+
+                  {/* SUBMIT */}
+                  <button
+                    type="submit"
+                    disabled={createLoading}
+                    className="w-full bg-[#0B1C3D] hover:bg-[#132a5c] text-white py-3.5 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {createLoading ? (
+                      <>
+                        <Loader2
+                          size={18}
+                          className="animate-spin"
+                        />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Found Report"
+                    )}
+                  </button>
+
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+        )}
       </div>
     </section>
   );
