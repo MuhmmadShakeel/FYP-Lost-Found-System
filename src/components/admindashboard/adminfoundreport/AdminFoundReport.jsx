@@ -54,7 +54,6 @@ function AdminFoundReport() {
       .filter((r) => {
         const searchMatch =
           r?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          r?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           r?.item?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           r?.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           r?.location?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -171,7 +170,7 @@ function AdminFoundReport() {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              placeholder="Search by name, email, item, category, or location"
+              placeholder="Search by name, item, category, or location"
               className="w-full bg-transparent outline-none text-slate-700 placeholder:text-slate-400"
             />
           </div>
@@ -228,19 +227,13 @@ function AdminFoundReport() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <h2 className="text-lg sm:text-xl font-semibold text-slate-900">{item.item}</h2>
-                      <span className="text-sm font-medium text-slate-500">{item.category || "Uncategorized"}</span>
                     </div>
                     <p className="mt-2 text-sm text-slate-600">
                       {item.name} • {item.location || "Unknown location"}
                     </p>
-                    <p className="mt-1 text-sm text-slate-500">Email: {item.email}</p>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 gap-3">
-                    <span className="inline-flex flex-col text-right text-xs text-slate-500">
-                      <span>{new Date(item.date).toLocaleDateString()}</span>
-                      <span>{new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    </span>
-                    {getStatus(item.status)}
+                 
                     <button
                       onClick={() => handleDelete(item._id)}
                       className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-red-50 text-red-600 transition hover:bg-red-100"

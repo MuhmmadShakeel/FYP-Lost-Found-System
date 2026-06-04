@@ -37,7 +37,6 @@ function OverviewChart() {
   const totalFound = foundItems.length;
   const totalLost = lostItems.length;
 
-  // ================= PIE CHART DATA =================
   const pieData = [
     { name: "Lost Items", value: totalLost },
     { name: "Found Items", value: totalFound },
@@ -45,7 +44,6 @@ function OverviewChart() {
     { name: "Returns", value: totalReturns },
   ];
 
-  // ================= BAR CHART DATA =================
   const barData = [
     { name: "Lost", count: totalLost, fill: "#3B82F6" },
     { name: "Found", count: totalFound, fill: "#10B981" },
@@ -53,7 +51,6 @@ function OverviewChart() {
     { name: "Returned", count: totalReturns, fill: "#8B5CF6" },
   ];
 
-  // ================= LINE CHART DATA (by status) =================
   const lineData = [
     { 
       category: "Lost", 
@@ -304,67 +301,6 @@ function OverviewChart() {
                   />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* SUMMARY CARDS */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5 sm:p-6 hover:shadow-lg transition-all duration-300 xl:col-span-2">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">
-              Quick Summary
-            </h2>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              {/* TOTAL ITEMS */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-blue-600 font-semibold">Total Items</p>
-                    <p className="text-3xl font-bold text-blue-900 mt-2">
-                      {totalLost + totalFound + totalClaims + totalReturns}
-                    </p>
-                  </div>
-                  <div className="text-4xl text-blue-300">📦</div>
-                </div>
-              </div>
-
-              {/* RESOLUTION RATE */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-green-600 font-semibold">Resolution Rate</p>
-                    <p className="text-3xl font-bold text-green-900 mt-2">
-                      {totalLost > 0 ? Math.round(((totalClaims + totalReturns) / totalLost) * 100) : 0}%
-                    </p>
-                  </div>
-                  <div className="text-4xl text-green-300">✅</div>
-                </div>
-              </div>
-
-              {/* PENDING ITEMS */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-amber-600 font-semibold">Pending Items</p>
-                    <p className="text-3xl font-bold text-amber-900 mt-2">
-                      {totalLost - totalClaims - totalReturns}
-                    </p>
-                  </div>
-                  <div className="text-4xl text-amber-300">⏳</div>
-                </div>
-              </div>
-
-              {/* SUCCESS ITEMS */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-purple-600 font-semibold">Success Cases</p>
-                    <p className="text-3xl font-bold text-purple-900 mt-2">
-                      {totalClaims + totalReturns}
-                    </p>
-                  </div>
-                  <div className="text-4xl text-purple-300">🎉</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

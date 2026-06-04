@@ -7,6 +7,9 @@ import { useState } from "react";
 import Navbar from "./components/userscomponents/common/Navbar.jsx";
 import Footer from "./components/userscomponents/common/Footer.jsx";
 
+/* Protected Route */
+import ProtectedRoute from "./context/ProtectedRoute.jsx";
+
 /* User Pages */
 import HomePage from "./pages/systemuserspages/HomePage.jsx";
 import AboutPage from "./pages/systemuserspages/AboutPage.jsx";
@@ -63,26 +66,29 @@ function App() {
           }
         />
 
-     {/* admin route */}
+     {/* admin protected route */}
 
         <Route
           path="/admin/*"
           element={
-            <div className="min-h-screen bg-slate-50">
-              <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-              <AdminNav setOpen={setSidebarOpen} />
-              <main className="min-h-screen w-full pt-16 md:pl-64">
-                <Routes>
+            <ProtectedRoute>
+              <div className="min-h-screen bg-slate-50">
+                <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+                <AdminNav setOpen={setSidebarOpen} />
+                <main className="min-h-screen w-full pt-16 md:pl-64">
+                  <Routes>
+                 <Route index element={<Overviewpage />} />
                   <Route path="overview" element={<Overviewpage />} />
-                  <Route path="lostreport" element={<AdminLostReportPage />} />
-                  <Route path="foundreport" element={<AdminFoundReportPage />} />
-                  <Route path="claimeditem" element={<AllClaimedItemPage />} />
-                  <Route path="returnitem" element={<ReturnItemPage />} />
-                  <Route path="dashboarduser" element={<DashboardUserPage />} />
-                  <Route path="userreviews" element={<UserReviwsPage />} />
-                </Routes>
-              </main>
-            </div>
+                    <Route path="lostreport" element={<AdminLostReportPage />} />
+                    <Route path="foundreport" element={<AdminFoundReportPage />} />
+                    <Route path="claimeditem" element={<AllClaimedItemPage />} />
+                    <Route path="returnitem" element={<ReturnItemPage />} />
+                    <Route path="dashboarduser" element={<DashboardUserPage />} />
+                    <Route path="userreviews" element={<UserReviwsPage />} />
+                  </Routes>
+                </main>
+              </div>
+            </ProtectedRoute>
           }
         />
 

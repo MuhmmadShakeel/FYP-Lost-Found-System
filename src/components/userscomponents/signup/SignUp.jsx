@@ -131,9 +131,7 @@ function SignUp() {
           <img
             src="https://i.pinimg.com/736x/26/47/ed/2647ed6ee48e26fb366a7a206ad402e1.jpg"
             alt="signup"
-            className="w-full h-full object-cover"
-          />
-
+            className="w-full h-full object-cover"/>
           <div className="absolute bottom-6 left-6 text-white">
             <h3 className="text-sm font-semibold">Lost & Found</h3>
             <p className="text-[10px] opacity-90">Reconnect belongings</p>

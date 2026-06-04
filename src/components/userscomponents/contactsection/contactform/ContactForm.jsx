@@ -105,7 +105,7 @@ function ContactForm() {
         <div className="md:w-1/2 relative hidden md:block">
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent z-10 rounded-r-2xl"></div>
           <img
-            src="https://i.pinimg.com/1200x/cb/af/08/cbaf084b00be5bd77f5709888e804688.jpg"
+            src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Contact Us - Professional workspace"
             className="w-full h-full object-cover rounded-r-2xl"
           />

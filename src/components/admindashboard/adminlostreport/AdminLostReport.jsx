@@ -55,13 +55,11 @@ function AdminLostReport() {
     return reports
       .filter((report) => {
         const name = report?.name || "";
-        const email = report?.email || "";
         const product = report?.product || "";
         const location = report?.location || "";
 
         const matchesSearch =
           name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          email.toLowerCase().includes(searchTerm.toLowerCase()) ||
           product.toLowerCase().includes(searchTerm.toLowerCase()) ||
           location.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -173,7 +171,7 @@ function AdminLostReport() {
                   setSearchTerm(e.target.value);
                   setCurrentPage(1);
                 }}
-                placeholder="Search by name, email, product, or location"
+                placeholder="Search by name, product, or location"
                 className="w-full bg-transparent outline-none text-slate-700 placeholder:text-slate-400"
               />
             </div>
@@ -227,7 +225,6 @@ function AdminLostReport() {
                       <p className="mt-2 text-sm text-slate-600">
                         {item.name} • {item.location || "Unknown location"}
                       </p>
-                      <p className="mt-1 text-sm text-slate-500">Email: {item.email}</p>
                       <p className="mt-1 text-sm text-slate-500">
                         Reported on: {new Date(item.date).toLocaleDateString()}
                       </p>

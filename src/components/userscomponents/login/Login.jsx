@@ -21,7 +21,6 @@ function Login() {
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
   }, []);
-
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -41,20 +40,22 @@ function Login() {
     try {
       const res = await loginUser({ email, password }).unwrap();
 
-      // ✅ Token extract (adjust based on backend)
-      const token = res?.token || res?.user?.token;
+      const token = res?.token ?? res?.user?.token ?? res?.data?.token;
+      const role = res?.role ?? res?.user?.role ?? res?.data?.role ?? "user";
 
       if (!token) {
         return toast.error("Token not received");
       }
 
-      // ✅ Use shared auth helper to store token and update state
-      login(token);
+      login(token, role);
 
       toast.success(res?.message || "Login successful");
 
-      // ✅ Redirect
-      navigate("/");
+      if (role === "admin") {
+        navigate("/admin/overview");
+      } else {
+        navigate("/");
+      }
 
     } catch (err) {
       console.error("LOGIN ERROR:", err);
@@ -142,5 +143,4 @@ function Login() {
     </section>
   );
 }
-
 export default Login;

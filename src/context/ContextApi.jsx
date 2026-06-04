@@ -3,16 +3,20 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("userRole");
 
     if (storedToken) {
       setToken(storedToken);
+      setUserRole(storedRole);
       setIsLoggedIn(true);
     } else {
       setToken(null);
+      setUserRole(null);
       setIsLoggedIn(false);
     }
 
@@ -20,8 +24,12 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // ✅ LOGIN FUNCTION
-  const login = (newToken) => {
+  const login = (newToken, role = null) => {
     localStorage.setItem("token", newToken);
+    if (role) {
+      localStorage.setItem("userRole", role);
+      setUserRole(role);
+    }
     setToken(newToken);
     setIsLoggedIn(true);
   };
@@ -29,7 +37,9 @@ export const AuthProvider = ({ children }) => {
   // ✅ LOGOUT FUNCTION
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
     setToken(null);
+    setUserRole(null);
     setIsLoggedIn(false);
   };
 
@@ -39,6 +49,7 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         setIsLoggedIn,
         token,
+        userRole,
         loading,
         login,
         logout,

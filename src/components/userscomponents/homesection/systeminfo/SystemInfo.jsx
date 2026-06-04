@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 const images = [
   "https://i.pinimg.com/1200x/98/e9/97/98e9979ef1e6c7985bff181a548191e2.jpg",
   "https://i.pinimg.com/1200x/c3/d6/6a/c3d66aaf47faee1fd7da8ed909c6fcc7.jpg",
-  "https://www.shutterstock.com/image-vector/grunge-rubber-stamp-text-lost-260nw-2188447711.jpg"
+  "https://images.unsplash.com/photo-1510133768164-a8f7e4d4e3dc?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 ];
 
 function SystemInfo() {

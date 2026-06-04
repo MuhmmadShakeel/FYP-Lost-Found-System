@@ -16,8 +16,6 @@ export const userApi = createApi({
   tagTypes: ['User'],
 
   endpoints: (builder) => ({
-
-// ✅ REGISTER
     registerUser: builder.mutation({
       query: (userData) => ({
         url: '/register',
@@ -27,7 +25,6 @@ export const userApi = createApi({
       invalidatesTags: ['User'],
     }),
 
-    // ✅ LOGIN (FIXED POSITION)
     loginUser: builder.mutation({
       query: (credentials) => ({
         url: '/login',
@@ -53,7 +50,6 @@ export const userApi = createApi({
   }),
 });
 
-// ✅ EXPORT HOOKS
 export const {
   useRegisterUserMutation,
   useLoginUserMutation,
