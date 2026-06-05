@@ -4,9 +4,11 @@ import OverviewChart from '../../components/admindashboard/overview/OverviewChar
 
 function Overviewpage() {
   return (
-    <div>
-      <Overview/>
-      <OverviewChart/>
+    <div className="min-h-screen bg-[#F5F7FB] lg:ml-[20px] pt-[90px] px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1400px] mx-auto space-y-8 pb-8">
+        <Overview />
+        <OverviewChart />
+      </div>
     </div>
   )
 }

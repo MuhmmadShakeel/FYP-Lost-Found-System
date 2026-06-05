@@ -131,7 +131,7 @@ function ProfilePanel() {
 
   if (isLoading && !profile) {
     return (
-      <div className="p-8 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center min-h-32">
+      <div className="p-8 rounded-2xl bg-gradient-to-r text-black from-blue-50 to-indigo-50 border border-blue-100 flex items-center justify-center min-h-32">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-4 border-[#203C8B] border-t-transparent rounded-full animate-spin"></div>
           <p className="text-[#203C8B] font-medium">Loading profile...</p>
@@ -215,7 +215,7 @@ function ProfilePanel() {
                 disabled={isDeleting}
                 className="px-5 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50"
               >
-                {isDeleting ? "Deleting..." : "🗑️ Delete"}
+                {isDeleting ? "Deleting..." : "Delete"}
               </button>
             )}
 
@@ -247,10 +247,10 @@ function ProfilePanel() {
                 onChange={handleChange}
                 placeholder="Tell us about yourself... (max 500 characters)"
                 maxLength={500}
-                className="w-full border-2 border-gray-300 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-[#203C8B] focus:border-transparent outline-none transition resize-none"
+                className="w-full border-2 border-gray-300 rounded-2xl p-4 text-black text-sm focus:ring-2 focus:ring-[#203C8B] focus:border-transparent outline-none transition resize-none"
                 rows={4}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-black mt-1">
                 {form.bio.length}/500 characters
               </p>
             </div>

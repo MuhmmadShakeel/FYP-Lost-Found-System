@@ -8,7 +8,6 @@ import {
 } from "../../../../redux/LostPost";
 
 function LostPostsPanel() {
-  /* ================= API ================= */
 
   const {
     data,
@@ -20,7 +19,6 @@ function LostPostsPanel() {
 
   const [updateLostPost, { isLoading: updating }] = useUpdateLostPostMutation();
 
-  /* ================= STATES ================= */
 
   const [lostPosts, setLostPosts] = useState([]);
 
@@ -38,7 +36,6 @@ function LostPostsPanel() {
 
   const [currentItemImage, setCurrentItemImage] = useState(null);
 
-  /* ================= SET DATA ================= */
 
   useEffect(() => {
     if (data?.data) {
@@ -49,7 +46,6 @@ function LostPostsPanel() {
     }
   }, [data]);
 
-  /* ================= DELETE ================= */
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
@@ -66,7 +62,6 @@ function LostPostsPanel() {
     }
   };
 
-  /* ================= START EDIT ================= */
 
   const handleStartEdit = (item) => {
     setEditingItem(item._id);
@@ -78,7 +73,6 @@ function LostPostsPanel() {
     setCurrentItemImage(item.lostimage?.url || null);
   };
 
-  /* ================= IMAGE HANDLERS ================= */
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -101,7 +95,6 @@ function LostPostsPanel() {
     setCurrentItemImage(null);
   };
 
-  /* ================= SAVE EDIT ================= */
 
   const handleSaveEdit = async () => {
     try {
@@ -122,7 +115,6 @@ function LostPostsPanel() {
         console.log("📷 No new image selected");
       }
 
-      // Log FormData contents for debugging
       console.log("📋 Update FormData contents:");
       for (let [key, value] of updateData.entries()) {
         if (value instanceof File) {
@@ -141,7 +133,6 @@ function LostPostsPanel() {
 
       toast.success(res?.message || "Lost item updated successfully");
 
-      // Update the local state with the updated item data
       setLostPosts((prev) =>
         prev.map((item) =>
           item._id === editingItem ? res.data : item
@@ -163,7 +154,6 @@ function LostPostsPanel() {
     }
   };
 
-  /* ================= CANCEL EDIT ================= */
 
   const handleCancelEdit = () => {
     setEditingItem(null);
@@ -172,17 +162,10 @@ function LostPostsPanel() {
     setCurrentItemImage(null);
   };
 
-  /* ================= ADD NEW ================= */
+  
 
-  /* ================= ADD NEW ================= */
+ 
 
-  const handleAddNew = () => {
-    toast("Create functionality can be connected here", {
-      icon: "ℹ️",
-    });
-  };
-
-  /* ================= LOADING ================= */
 
   if (isLoading) {
     return (
@@ -202,16 +185,8 @@ function LostPostsPanel() {
             Manage your reported lost items
           </p>
         </div>
-        <button
-          onClick={handleAddNew}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#203C8B] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1a336e] transition shadow-md"
-        >
-          <FaPlus />
-          Add New
-        </button>
       </div>
 
-      {/* ================= TOTAL CARD ================= */}
       <div className="bg-gradient-to-r from-[#203C8B] to-[#3558c8] rounded-3xl p-6 text-white shadow-lg">
         <p className="text-sm text-white/80 mb-2">Total Lost Reports</p>
         <h2 className="text-4xl font-bold">{lostPosts.length}</h2>
@@ -242,7 +217,7 @@ function LostPostsPanel() {
                       <input
                         value={draftTitle}
                         onChange={(e) => setDraftTitle(e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
+                        className="w-full text-black rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
                         placeholder="e.g., Black Wallet"
                         required
                       />
@@ -257,7 +232,7 @@ function LostPostsPanel() {
                         value={draftDetails}
                         onChange={(e) => setDraftDetails(e.target.value)}
                         rows={4}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all resize-none"
+                        className="w-full text-black rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all resize-none"
                         placeholder="Describe the item in detail..."
                         required
                       />
@@ -271,7 +246,7 @@ function LostPostsPanel() {
                       <input
                         value={draftLocation}
                         onChange={(e) => setDraftLocation(e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
+                        className="w-full rounded-xl border text-black border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
                         placeholder="e.g., Central Park"
                         required
                       />

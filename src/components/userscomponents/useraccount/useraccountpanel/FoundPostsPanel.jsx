@@ -220,20 +220,10 @@ function FoundPostsPanel() {
     setCurrentItemImage(null);
   };
 
-  /* ================= ADD NEW ================= */
 
-  const handleAddNew = () => {
+  
 
-    toast(
-      "Create functionality can be connected here",
-      {
-        icon: "ℹ️",
-      }
-    );
 
-  };
-
-  /* ================= LOADING ================= */
 
   if (isLoading) {
 
@@ -253,7 +243,6 @@ function FoundPostsPanel() {
 
     <div className="space-y-6">
 
-      {/* ================= TOP BAR ================= */}
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
@@ -269,17 +258,9 @@ function FoundPostsPanel() {
 
         </div>
 
-        <button
-          onClick={handleAddNew}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#203C8B] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1a336e] transition shadow-md"
-        >
-          <FaPlus />
-          Add New
-        </button>
 
       </div>
 
-      {/* ================= TOTAL CARD ================= */}
 
       <div className="bg-gradient-to-r from-[#203C8B] to-[#3558c8] rounded-3xl p-6 text-white shadow-lg">
 
@@ -293,7 +274,6 @@ function FoundPostsPanel() {
 
       </div>
 
-      {/* ================= POSTS ================= */}
 
       <div className="space-y-5">
 
@@ -317,7 +297,6 @@ function FoundPostsPanel() {
                   </h3>
 
                   <div className="space-y-4 bg-white rounded-2xl p-5 border border-slate-200">
-                    {/* Name Field */}
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
                         Item Name <span className="text-red-500">*</span>
@@ -325,13 +304,12 @@ function FoundPostsPanel() {
                       <input
                         value={draftTitle}
                         onChange={(e) => setDraftTitle(e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
+                        className="w-full rounded-xl border border-slate-300 text-black px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
                         placeholder="e.g., Black Wallet"
                         required
                       />
                     </div>
 
-                    {/* Description Field */}
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
                         Description <span className="text-red-500">*</span>
@@ -340,7 +318,7 @@ function FoundPostsPanel() {
                         value={draftDetails}
                         onChange={(e) => setDraftDetails(e.target.value)}
                         rows={4}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all resize-none"
+                        className="w-full rounded-xl border border-slate-300 text-black px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all resize-none"
                         placeholder="Describe the item in detail..."
                         required
                       />
@@ -354,14 +332,13 @@ function FoundPostsPanel() {
                       <input
                         value={draftLocation}
                         onChange={(e) => setDraftLocation(e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
+                        className="w-full rounded-xl border border-slate-300 text-black px-4 py-3 outline-none focus:ring-2 focus:ring-[#203C8B] focus:border-transparent bg-white transition-all"
                         placeholder="e.g., Central Park"
                         required
                       />
                     </div>
                   </div>
 
-                  {/* Image Section */}
                   <div className="bg-white rounded-2xl p-5 border border-slate-200">
                     <label className="block text-sm font-semibold text-slate-700 mb-3">
                       Item Image

@@ -316,7 +316,6 @@ function AllReportsFound() {
 
             </div>
 
-            {/* LOCATION */}
             <div className="relative">
 
               <MapPin
@@ -349,7 +348,6 @@ function AllReportsFound() {
 
         </div>
 
-        {/* ================= LOADING ================= */}
 
         {isLoading ? (
           <div className="flex justify-center items-center py-24">
@@ -359,7 +357,6 @@ function AllReportsFound() {
           </div>
         ) : (
           <>
-            {/* ================= CARDS ================= */}
 
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
 
@@ -397,7 +394,6 @@ function AllReportsFound() {
 
                     </div>
 
-                    {/* CONTENT */}
                     <div className="p-6">
 
                       <div className="mb-5">
@@ -472,81 +468,72 @@ function AllReportsFound() {
 
         {/* ================= CLAIM MODAL ================= */}
 
-        {openClaimModal && (
-          <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
+       {openClaimModal && (
+  <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
 
-            <div className="relative w-full max-w-2xl animate-in zoom-in-95 duration-300">
+    <div className="relative w-full max-w-lg">
 
-              {/* CLOSE */}
-              <button
-                onClick={handleCloseClaim}
-                className="absolute -top-4 -right-4 z-50 bg-white text-[#0B1C3D] w-11 h-11 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300"
-              >
-                <X size={20} />
-              </button>
+      {/* Close Button */}
+      <button
+        onClick={handleCloseClaim}
+        className="absolute top-3 right-3 bg-gray-100 hover:bg-gray-200 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center"
+      >
+        <X size={18} />
+      </button>
 
-              {/* FORM */}
-              <div className="bg-white rounded-[35px] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.25)] max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
 
-                {/* TOP */}
-                <div className="bg-[#0B1C3D] px-8 py-7 text-white">
+        {/* Header */}
+        <div className="border-b px-6 py-4">
+          <h2 className="text-xl font-semibold text-[#0B1C3D]">
+            Claim Item
+          </h2>
 
-                  <h2 className="text-3xl font-black mb-2">
-                    Claim This Item
-                  </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Verify ownership to submit your claim.
+          </p>
+        </div>
 
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    Fill out the ownership verification
-                    form carefully. Your request will be
-                    sent to the person who posted this
-                    item.
-                  </p>
+        {/* Item Info */}
+        <div className="p-6 border-b">
 
-                </div>
+          <div className="flex items-center gap-3">
 
-                {/* ITEM INFO */}
-                <div className="px-8 pt-6">
+            <img
+              src={selectedReport?.foundimage?.url}
+              alt="item"
+              className="w-16 h-16 rounded-lg object-cover border"
+            />
 
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center gap-4">
+            <div>
+              <h3 className="font-medium text-gray-800">
+                {selectedReport?.name}
+              </h3>
 
-                    <img
-                      src={
-                        selectedReport?.foundimage
-                          ?.url
-                      }
-                      alt="item"
-                      className="w-20 h-20 rounded-2xl object-cover"
-                    />
-
-                    <div>
-                      <h3 className="font-bold text-[#0B1C3D] text-lg">
-                        {selectedReport?.name}
-                      </h3>
-
-                      <p className="text-gray-500 text-sm mt-1">
-                        {selectedReport?.location}
-                      </p>
-                    </div>
-
-                  </div>
-
-                </div>
-
-                {/* CLAIM FORM */}
-                <div className="p-8">
-<ClaimForm
-  selectedReport={selectedReport}
-  onClose={handleCloseClaim}
-/>                </div>
-
-              </div>
-
+              <p className="text-sm text-gray-500">
+                {selectedReport?.location}
+              </p>
             </div>
 
           </div>
-        )}
 
-        {/* ================= REPORT FOUND MODAL ================= */}
+        </div>
+
+        {/* Form */}
+        <div className="p-6 max-h-[60vh] overflow-y-auto">
+          <ClaimForm
+            selectedReport={selectedReport}
+            onClose={handleCloseClaim}
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
+
 
         {openModal && (
           <div className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
@@ -601,7 +588,6 @@ function AllReportsFound() {
 
                   </div>
 
-                  {/* DESCRIPTION */}
                   <div>
 
                     <label className="block text-sm font-semibold text-[#0B1C3D] mb-2">
@@ -614,7 +600,7 @@ function AllReportsFound() {
                       value={formData.description}
                       onChange={handleChange}
                       required
-                      placeholder="Describe the item..."
+                      placeholder="Describe the item with one hidden feature..."
                       className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 resize-none focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]"
                     />
 

@@ -79,29 +79,7 @@ function OverviewChart() {
   // ================= LOADING STATE =================
   if (claimsLoading || returnsLoading || foundLoading || lostLoading) {
     return (
-      <div className="bg-gradient-to-br from-slate-50 to-slate-100 lg:ml-[20px] px-4 sm:px-6 lg:px-8 pb-10">
-        <div className="w-full max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5 sm:p-6 h-96 animate-pulse"
-              >
-                <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-                <div className="h-64 bg-gray-100 rounded"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-gradient-to-br from-slate-50 to-slate-100 lg:ml-[20px] px-4 sm:px-6 lg:px-8 pb-10">
-      {/* WRAPPER */}
-      <div className="w-full max-w-[1400px] mx-auto">
-        {/* HEADER */}
+      <div className="space-y-8">
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">
             Dashboard Analytics
@@ -110,9 +88,35 @@ function OverviewChart() {
             Real-time system statistics and insights
           </p>
         </div>
-
-        {/* GRID */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5 sm:p-6 h-96 animate-pulse"
+            >
+              <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+              <div className="h-64 bg-gray-100 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* HEADER */}
+      <div className="mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">
+          Dashboard Analytics
+        </h1>
+        <p className="text-slate-600 mt-2">
+          Real-time system statistics and insights
+        </p>
+      </div>
+
+      {/* GRID */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {/* PIE CHART - DISTRIBUTION */}
           <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5 sm:p-6 hover:shadow-lg transition-all duration-300">
             {/* TOP */}
@@ -305,8 +309,7 @@ function OverviewChart() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default OverviewChart;

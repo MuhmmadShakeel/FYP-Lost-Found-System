@@ -84,14 +84,12 @@ function Sidebar({ open: controlledOpen, setOpen: setControlledOpen }) {
 
         </ul>
 
-        {/* FOOTER */}
-        <div className="absolute bottom-6 left-6 text-xs opacity-70">
-          Admin Dashboard
-        </div>
+        <Link to="/" className="absolute bottom-6 bg-white text-black px-8 py-2 rounded-2xl left-6 text-xs opacity-70">
+          Return To Home
+        </Link>
 
       </div>
 
-      {/* OVERLAY */}
       {open && (
         <div
           className="fixed inset-0 bg-black/40 md:hidden z-30"

@@ -15,6 +15,7 @@ import {
   Loader2,
   PackageSearch,
   ShieldCheck,
+  Search,
 } from "lucide-react";
 
 function LostPost() {
@@ -33,6 +34,8 @@ function LostPost() {
     image: null,
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const { data, isLoading, isError } =
     useGetAllLostPostsQuery();
 
@@ -40,6 +43,10 @@ function LostPost() {
     useCreateLostPostMutation();
 
   const reports = data?.data || [];
+
+  const filteredReports = reports.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // ================= INPUT CHANGE =================
   const handleChange = (e) => {
@@ -125,11 +132,25 @@ function LostPost() {
               Lost Items
             </h1>
 
-            <p className="text-gray-600 mt-4 max-w-2xl leading-relaxed text-sm sm:text-base">
+<p className="text-gray-600 mt-4 max-w-2xl leading-relaxed text-sm sm:text-base">
               Browse reported lost belongings and help return
               valuable items back to their rightful owners safely
               and professionally.
             </p>
+
+            <div className="mt-6 relative max-w-md">
+              <Search
+                size={18}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#0B1C3D]"
+              />
+              <input
+                type="text"
+                placeholder="Search lost items..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]"
+              />
+            </div>
 
           </div>
 
@@ -150,7 +171,7 @@ function LostPost() {
 
               <button
                 onClick={() => setIsOpen(true)}
-                className="mt-6 bg-white text-[#0B1C3D] hover:bg-gray-100 px-5 py-3 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-2 shadow-lg"
+                className="mt-6 bg-white text-[#0B1C3D] hover:bg-gray-100 px-2 py-3 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-2 shadow-lg"
               >
                 <Plus size={18} />
                 Report Lost Item
@@ -182,12 +203,11 @@ function LostPost() {
         </div>
       )}
 
-      {/* ================= CARDS ================= */}
 
-      {!isLoading && !isError && (
+      {!isLoading && !isError && filteredReports.length > 0 && (
         <div className="max-w-7xl mx-auto grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
 
-          {reports.map((item) => (
+          {filteredReports.map((item) => (
             <div
               key={item._id}
               className="group bg-white rounded-[32px] overflow-hidden border border-gray-200 hover:border-[#0B1C3D]/20 shadow-[0_10px_40px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_rgba(11,28,61,0.12)] transition-all duration-500 hover:-translate-y-2"
@@ -267,6 +287,29 @@ function LostPost() {
 
       {/* ================= EMPTY ================= */}
 
+      {!isLoading && !isError && reports.length > 0 && filteredReports.length === 0 && (
+        <div className="max-w-7xl mx-auto text-center py-24">
+
+          <div className="w-28 h-28 rounded-full bg-[#0B1C3D]/5 flex items-center justify-center mx-auto mb-6">
+
+            <PackageSearch
+              size={42}
+              className="text-[#0B1C3D]"
+            />
+
+          </div>
+
+          <h3 className="text-2xl font-bold text-[#0B1C3D] mb-3">
+            No Lost Items Found
+          </h3>
+
+          <p className="text-gray-500">
+            No lost reports match your search.
+          </p>
+
+        </div>
+      )}
+
       {!isLoading && reports.length === 0 && (
         <div className="max-w-7xl mx-auto text-center py-24">
 
@@ -290,97 +333,80 @@ function LostPost() {
         </div>
       )}
 
-      {openReturnModal && (
-        <div className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 py-6 animate-in fade-in duration-300">
+   {openReturnModal && (
+  <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
 
-          <div className="relative w-full max-w-xl animate-in zoom-in-95 duration-300">
+    <div className="relative w-full max-w-2xl animate-in zoom-in-95 duration-300">
 
-            {/* CLOSE */}
-            <button
-              onClick={() => setOpenReturnModal(false)}
-              className="absolute -top-4 -right-4 z-50 w-11 h-11 rounded-full bg-white shadow-xl flex items-center justify-center hover:bg-red-50 transition"
-            >
-              <X
-                size={20}
-                className="text-red-500"
-              />
-            </button>
+      {/* CLOSE */}
+      <button
+        onClick={() => setOpenReturnModal(false)}
+        className="absolute -top-4 -right-4 z-50 bg-white text-[#0B1C3D] w-11 h-11 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all duration-300"
+      >
+        <X size={20} />
+      </button>
 
-            {/* FORM */}
-            <div className="bg-white rounded-[32px] overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.25)] border border-white/20">
+      <div className="bg-white rounded-[35px] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.25)] max-h-[90vh] overflow-y-auto">
 
-              {/* TOP */}
-              <div className="bg-[#0B1C3D] px-7 py-6 text-white relative overflow-hidden">
+        {/* HEADER */}
+        <div className="bg-[#0B1C3D] px-8 py-7 text-white">
 
-                <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full translate-x-10 -translate-y-10"></div>
+          <h2 className="text-3xl font-black mb-2">
+            Return This Item
+          </h2>
 
-                <div className="relative z-10 flex items-start gap-4">
+          <p className="text-white/80 text-sm leading-relaxed">
+            Fill out the return verification form carefully.
+            Your request will be sent to the owner of this
+            lost item.
+          </p>
 
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-md">
-
-                    <ShieldCheck size={26} />
-
-                  </div>
-
-                  <div>
-
-                    <p className="uppercase tracking-[3px] text-xs text-blue-200 font-semibold">
-                      Return Process
-                    </p>
-
-                    <h2 className="text-2xl font-bold mt-2">
-                      Return Lost Item
-                    </h2>
-
-                    <p className="text-sm text-blue-100 mt-2 leading-relaxed">
-                      Help return this item to the owner safely.
-                    </p>
-
-                  </div>
-                </div>
-              </div>
-
-              {/* BODY */}
-              <div className="p-5 sm:p-6">
-
-                {/* ITEM PREVIEW */}
-                <div className="flex items-center gap-4 bg-gray-50 border border-gray-100 rounded-2xl p-3 mb-5">
-
-                  <img
-                    src={
-                      selectedItem?.lostimage?.url ||
-                      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop"
-                    }
-                    alt={selectedItem?.name}
-                    className="w-20 h-20 rounded-2xl object-cover"
-                  />
-
-                  <div className="min-w-0">
-
-                    <h3 className="text-lg font-bold text-[#0B1C3D] line-clamp-1">
-                      {selectedItem?.name}
-                    </h3>
-
-                    <p className="text-sm text-gray-500 line-clamp-2 mt-1">
-                      {selectedItem?.description}
-                    </p>
-
-                  </div>
-                </div>
-
-{/* FORM COMPONENT */}
-                 <ReturnBackForm
-                   selectedLostItem={selectedItem}
-                   onClose={() => setOpenReturnModal(false)}
-                 />
-
-              </div>
-            </div>
-          </div>
         </div>
-      )}
 
-      {/* ================= REPORT MODAL ================= */}
+        {/* ITEM INFO */}
+        <div className="px-8 pt-6">
+
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center gap-4">
+
+            <img
+              src={
+                selectedItem?.lostimage?.url ||
+                "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop"
+              }
+              alt={selectedItem?.name}
+              className="w-20 h-20 rounded-2xl object-cover"
+            />
+
+            <div>
+              <h3 className="font-bold text-[#0B1C3D] text-lg">
+                {selectedItem?.name}
+              </h3>
+
+              <p className="text-gray-500 text-sm mt-1">
+                {selectedItem?.description}
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* FORM */}
+        <div className="p-8">
+
+          <ReturnBackForm
+            selectedLostItem={selectedItem}
+            onClose={() => setOpenReturnModal(false)}
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
 
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
@@ -446,7 +472,7 @@ function LostPost() {
                   value={formData.description}
                   onChange={handleChange}
                   required
-                  placeholder="Describe your item..."
+                  placeholder="Describe item but hide one distinct feature..."
                   className="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 resize-none focus:outline-none focus:ring-2 focus:ring-[#0B1C3D]"
                 />
 
