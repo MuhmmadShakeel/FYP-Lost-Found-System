@@ -118,7 +118,7 @@ function Overview() {
                     {item.title}
                   </p>
 
-                  <h2 className="text-3xl font-extrabold text-[#0F172A] mt-2">
+                  <h2 className="text-2xl font-extrabold text-[#0F172A] mt-2">
                     {item.value}
                   </h2>
 
