@@ -4,7 +4,7 @@ export const claimApi = createApi({
   reducerPath: "claimApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v6/claim/",
+    baseUrl: `${import.meta.env.VITE_API_URL}/api/v6/claim/`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       

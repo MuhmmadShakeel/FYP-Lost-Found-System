@@ -90,7 +90,7 @@ const HomeHeader = () => {
       <div className="relative z-10 flex flex-col items-center justify-center text-center h-full px-5 md:px-6 lg:px-8">
         <div className="max-w-3xl animate-fadeIn">
           <h1
-            className="text-3xl md:text-5xl font-extrabold mb-6 transition-all duration-1000"
+            className="text-3xl md:text-5xl font-extrabold mb-8 transition-all duration-1000"
             data-aos="zoom-in"
             key={currentSlide.id}>
             {currentSlide.title.split(" ").map((word, i) => {

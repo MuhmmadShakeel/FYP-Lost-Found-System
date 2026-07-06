@@ -4,7 +4,7 @@ export const returnApi = createApi({
   reducerPath: "returnApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v7/return/",
+    baseUrl: `${import.meta.env.VITE_API_URL}/api/v7/return/`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {

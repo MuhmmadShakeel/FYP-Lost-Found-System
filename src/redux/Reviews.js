@@ -4,7 +4,7 @@ export const reviewsApi = createApi({
   reducerPath: "reviewsApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v2/reviews",
+    baseUrl: `${import.meta.env.VITE_API_URL}/api/v2/reviews`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {

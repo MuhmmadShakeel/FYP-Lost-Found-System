@@ -4,7 +4,7 @@ export const lostPostApi = createApi({
   reducerPath: "lostPostApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v3/lostposts",
+    baseUrl: `${import.meta.env.VITE_API_URL}/api/v3/lostposts`,
 
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
