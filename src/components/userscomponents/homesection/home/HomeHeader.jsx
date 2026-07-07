@@ -119,7 +119,7 @@ const HomeHeader = () => {
           </p>
 
           <p
-            className="text-md md:text-lg text-white/80 leading-relaxed mb-8"
+            className="text-md md:text-lg text-white/80 leading-relaxed mb-6"
             data-aos="zoom-in"
             data-aos-delay="200"
           >
