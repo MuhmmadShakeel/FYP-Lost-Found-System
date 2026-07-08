@@ -111,7 +111,7 @@ const HomeHeader = () => {
           </h1>
 
           <p
-            className="text-xl md:text-2xl text-white/90 mb-4"
+            className="text-xl md:text-3xl text-white/90 mb-4"
             data-aos="zoom-in"
             data-aos-delay="100"
           >
